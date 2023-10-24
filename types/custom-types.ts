@@ -1,9 +1,6 @@
-declare const roles: readonly [
-    'buyer', 'seller',
-    'consultingBuyer', 'consultingSeller'
-];
+declare const roles: readonly ['buyer', 'seller', 'consultingBuyer', 'consultingSeller'];
 
-export type IRole = typeof roles[number];
+export type IRole = (typeof roles)[number];
 
 export type IUser = {
     id?: any;
@@ -20,7 +17,7 @@ export type IUser = {
 
 export interface IRequestUser extends Request {
     user: IUser;
-};
+}
 
 export type IAuthRequest = IRequestUser & {
     headers: { authorization: string };

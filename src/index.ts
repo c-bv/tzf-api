@@ -1,4 +1,4 @@
-import config from '@config/config';
+import { config } from '@config/config';
 import connectDB from '@config/db';
 import logger from '@config/logger';
 import app from './app';
@@ -21,7 +21,7 @@ const exitSignals: NodeJS.Signals[] = ['SIGINT', 'SIGTERM', 'SIGQUIT'];
 process.on('uncaughtException', unexpectedErrorHandler);
 process.on('unhandledRejection', unexpectedErrorHandler);
 
-exitSignals.map((sig) =>
+exitSignals.map(sig =>
     process.on(sig, () => {
         logger.info(`${sig} signal received.`);
         server && server.close();

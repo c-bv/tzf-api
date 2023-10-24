@@ -1,4 +1,4 @@
-import config from '@config/config';
+import { config } from '@config/config';
 import mongoose, { ConnectOptions } from 'mongoose';
 
 const connectDB = async (): Promise<void> => {
@@ -9,7 +9,7 @@ const connectDB = async (): Promise<void> => {
     } catch (error) {
         console.log(error);
         process.exit(1);
-    };
+    }
 };
 
 export default connectDB;

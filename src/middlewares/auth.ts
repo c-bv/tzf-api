@@ -10,5 +10,5 @@ const verifyRole = (role: IRole) => {
 };
 
 export default {
-    verifyRole,
+    verifyRole
 };

@@ -4,10 +4,8 @@ import express from 'express';
 
 const router = express.Router();
 
-router.route('/:id')
-    .get(userController.getUser)
+router.route('/:id').get(userController.getUser);
 
-router.route('/check')
-    .post(userController.checkUser);
+router.route('/check').post(userController.checkUser);
 
 export default asyncRouter(router);

@@ -1,4 +1,4 @@
-import env from '@config/config';
+import { config } from '@config/config';
 import logger from '@config/logger';
 import ApiError from '@utils/ApiError';
 import { NextFunction, Request, Response } from 'express';
@@ -21,7 +21,7 @@ const handler = (err: any, req: Request, res: Response, next: NextFunction) => {
     const response = {
         code: err.status,
         message: err.message || httpStatus[err.status],
-        ...(env.env === 'development' && { stack: err.stack })
+        ...(config.env === 'development' && { stack: err.stack })
     };
     res.status(err.status).send(response);
     logger.error(err);

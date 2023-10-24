@@ -9,7 +9,7 @@ const register = async (req: Request, res: Response) => {
 };
 
 const login = async (req: Request, res: Response) => {
-    const { email, password } = req.body as { email: string, password: string };
+    const { email, password } = req.body as { email: string; password: string };
     const user = await authService.loginUserWithEmailAndPassword(email, password);
     const token = tokenService.generateAuthToken(user);
     res.send({ user, token });

@@ -1,4 +1,4 @@
-import config from '@config/config';
+import { config } from '@config/config';
 import { IUser } from '@custom-types/custom-types';
 import jwt from 'jsonwebtoken';
 
@@ -16,5 +16,5 @@ const verifyAuthToken = (token: string) => {
 
 export default {
     generateAuthToken,
-    verifyAuthToken,
+    verifyAuthToken
 };

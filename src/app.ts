@@ -1,4 +1,4 @@
-import config from '@config/config';
+import { config } from '@config/config';
 import error from '@middlewares/error';
 import rateLimiter from '@middlewares/rateLimiter';
 import router from '@routes/v1';
@@ -16,7 +16,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     res.set({
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With, Accept'
     });
     next();
 });

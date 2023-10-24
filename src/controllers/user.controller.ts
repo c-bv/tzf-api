@@ -9,9 +9,9 @@ const getUser = async (req: Request, res: Response) => {
     res.send(user);
 };
 
-
 const checkUser = async (req: Request, res: Response) => {
-    if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) throw new ApiError(401, 'Unauthorized - no token provided');
+    if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer '))
+        throw new ApiError(401, 'Unauthorized - no token provided');
 
     const token = req.headers.authorization.split(' ')[1];
 

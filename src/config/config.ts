@@ -1,11 +1,11 @@
 import * as dotenv from 'dotenv';
 import * as path from 'path';
-      
+
 dotenv.config({
-    path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`),
+    path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`)
 });
 
-const config: any = {
+const config = {
     env: process.env.NODE_ENV!,
     app: {
         name: process.env.APP_NAME!,
@@ -55,4 +55,6 @@ const config: any = {
     }
 };
 
-export default config;
+export type TypeConfig = typeof config;
+
+export { config };
