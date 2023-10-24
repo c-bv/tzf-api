@@ -1,0 +1,60 @@
+{
+    "name": "tzf-api",
+    "version": "0.0.1",
+    "description": "The Zero Fund API",
+    "main": "src/index.ts",
+    "scripts": {
+        "start": "node dist/index.js",
+        "dev": "export NODE_ENV=development && nodemon src/index.ts",
+        "build": "tsc",
+        "test": "mocha --require ts-node/register src/test/**/*.ts"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://gitlab.com/h64/fondscarbone-api.git"
+    },
+    "author": "H64",
+    "license": "ISC",
+    "dependencies": {
+        "archiver": "^5.3.1",
+        "bcrypt": "^5.1.0",
+        "cors": "^2.8.5",
+        "cron": "^2.3.0",
+        "dotenv": "^16.0.3",
+        "ejs": "^3.1.9",
+        "ethers": "^6.3.0",
+        "express": "^4.18.2",
+        "express-rate-limit": "^6.7.0",
+        "express-winston": "^4.2.0",
+        "http-status": "^1.6.2",
+        "i18next": "^22.4.15",
+        "i18next-http-middleware": "^3.3.0",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^6.9.0",
+        "multer": "^1.4.5-lts.1",
+        "node-fetch": "^3.3.0",
+        "nodemailer": "^6.9.1",
+        "pdfkit": "^0.13.0",
+        "pdfkit-table": "^0.1.99",
+        "sharp": "^0.32.1",
+        "stripe": "^12.3.0",
+        "winston": "^3.8.2",
+        "ws": "^8.13.0"
+    },
+    "devDependencies": {
+        "@types/bcrypt": "^5.0.0",
+        "@types/cors": "^2.8.13",
+        "@types/express": "^4.17.15",
+        "@types/express-rate-limit": "^6.0.0",
+        "@types/jsonwebtoken": "^9.0.1",
+        "@types/node": "^18.11.18",
+        "chai": "^4.3.7",
+        "chai-http": "^4.3.0",
+        "mocha": "^10.2.0",
+        "mongodb-memory-server": "^8.12.2",
+        "nodemon": "^2.0.21",
+        "ts-node": "^10.9.1",
+        "tsconfig-paths": "^4.1.2",
+        "typescript": "^4.9.4"
+    }
+}

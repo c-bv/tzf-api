@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "module": "NodeNext",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "target": "ES2020",
+        "strict": true,
+        "sourceMap": true,
+        "noEmitOnError": true,
+        "outDir": "dist",
+        "baseUrl": "./",
+        "paths": {
+            "@/*": ["src/*"],
+            "@config/*": ["src/config/*"],
+            "@controllers": ["src/controllers/index.ts"],
+            "@middlewares/*": ["src/middlewares/*"],
+            "@models": ["src/models/index.ts"],
+            "@routes/*": ["src/routes/*"],
+            "@services": ["src/services/index.ts"],
+            "@utils/*": ["src/utils/*"],
+            "@custom-types/*": ["types/*"],
+            "@test/*": ["test/*"]
+        }
+    },
+    "ts-node": {
+        "require": [
+            "tsconfig-paths/register"
+        ]
+    }
+}
