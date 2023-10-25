@@ -1,9 +1,9 @@
 import { config } from '@config/config';
-import { IRole, IUser } from '@custom-types/custom-types';
+import { TRole, TUser } from '@custom-types/custom-types';
 import bcrypt from 'bcrypt';
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
-export interface IUserDocument extends IUser, Document {
+export interface IUserDocument extends TUser, Document {
     setPassword: (password: string) => Promise<void>;
     checkPassword: (password: string) => Promise<boolean>;
 }
@@ -35,7 +35,7 @@ const userShema: Schema<IUserDocument> = new Schema(
         },
         role: {
             type: String,
-            enum: [] as IRole[],
+            enum: [] as TRole[],
             required: { message: 'Role is required' }
         },
         companyId: {
@@ -76,5 +76,4 @@ userShema.pre('save', async function (): Promise<void> {
     await this.setPassword(this.password as string);
 });
 
-const User = mongoose.model<IUserDocument, IUserModel>('User', userShema);
-export default User;
+export const UserModel = mongoose.model<IUserDocument, IUserModel>('User', userShema);

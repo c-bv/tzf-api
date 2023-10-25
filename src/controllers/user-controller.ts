@@ -1,15 +1,15 @@
 import { tokenService, userService } from '@services';
-import ApiError from '@utils/ApiError';
+import { ApiError } from '@utils/ApiError';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 
-const getUser = async (req: Request, res: Response) => {
+export const getUser = async (req: Request, res: Response) => {
     const user = await userService.getUserById(req.params.id);
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
     res.send(user);
 };
 
-const checkUser = async (req: Request, res: Response) => {
+export const checkUser = async (req: Request, res: Response) => {
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer '))
         throw new ApiError(401, 'Unauthorized - no token provided');
 
@@ -22,9 +22,4 @@ const checkUser = async (req: Request, res: Response) => {
     if (!user) throw new ApiError(404, 'User not found');
 
     res.status(httpStatus.OK).send(user);
-};
-
-export default {
-    getUser,
-    checkUser
 };

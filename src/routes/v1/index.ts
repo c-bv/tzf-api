@@ -1,26 +1,26 @@
 import { config } from '@config/config';
 import express from 'express';
-import authRoute from './auth.route';
-import docsRoute from './docs.route';
-import userRoute from './user.route';
+import { authRouter } from './auth-router';
+import { docRouter } from './doc-router';
+import { userRouter } from './user-router';
 
 const router = express.Router();
 
 const defaultRoutes = [
     {
         path: '/auth',
-        route: authRoute
+        route: authRouter
     },
     {
         path: '/user',
-        route: userRoute
+        route: userRouter
     }
 ];
 
 const devRoutes = [
     {
-        path: '/docs',
-        route: docsRoute
+        path: '/doc',
+        route: docRouter
     }
 ];
 
@@ -33,4 +33,4 @@ config.env === 'development' &&
         router.use(route.path, route.route);
     });
 
-export default router;
+export { router };

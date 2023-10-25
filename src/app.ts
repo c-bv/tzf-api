@@ -1,13 +1,13 @@
 import { config } from '@config/config';
-import error from '@middlewares/error';
-import rateLimiter from '@middlewares/rateLimiter';
-import router from '@routes/v1';
-import ApiError from '@utils/ApiError';
+import * as error from '@middlewares/error';
+import { rateLimiter } from '@middlewares/rateLimiter';
+import { router } from '@routes/v1';
+import { ApiError } from '@utils/ApiError';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 
-const app = express();
+export const app = express();
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -36,5 +36,3 @@ app.use((req: Request, res: Response, next: any) => {
 
 app.use(error.converter);
 app.use(error.handler);
-
-export default app;

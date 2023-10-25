@@ -4,8 +4,9 @@ import * as path from 'path';
 dotenv.config({
     path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`)
 });
+export type TConfig = typeof config;
 
-const config = {
+export const config = {
     env: process.env.NODE_ENV!,
     app: {
         name: process.env.APP_NAME!,
@@ -54,7 +55,3 @@ const config = {
         invoiceTemplateId: process.env.H64_INVOICE_TEMPLATE_ID!
     }
 };
-
-export type TypeConfig = typeof config;
-
-export { config };

@@ -1,11 +1,11 @@
 import { config } from '@config/config';
-import logger from '@config/logger';
-import ApiError from '@utils/ApiError';
+import { logger } from '@config/logger';
+import { ApiError } from '@utils/ApiError';
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 import mongoose from 'mongoose';
 
-const converter = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const converter = (err: any, req: Request, res: Response, next: NextFunction) => {
     let error = err;
     if (!(err instanceof ApiError)) {
         error = new ApiError(
@@ -17,7 +17,7 @@ const converter = (err: any, req: Request, res: Response, next: NextFunction) =>
     next(error);
 };
 
-const handler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const handler = (err: any, req: Request, res: Response, next: NextFunction) => {
     const response = {
         code: err.status,
         message: err.message || httpStatus[err.status],
@@ -26,5 +26,3 @@ const handler = (err: any, req: Request, res: Response, next: NextFunction) => {
     res.status(err.status).send(response);
     logger.error(err);
 };
-
-export default { converter, handler };

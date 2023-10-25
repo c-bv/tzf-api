@@ -1,1 +1,1 @@
-export { IUserDocument, IUserModel, default as UserModel } from './user.model';
+export { IUserDocument, IUserModel, UserModel } from './user.model';

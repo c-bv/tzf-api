@@ -1,7 +1,7 @@
 import { config } from '@config/config';
-import connectDB from '@config/db';
-import logger from '@config/logger';
-import app from './app';
+import { connectDB } from '@config/db';
+import { logger } from '@config/logger';
+import { app } from './app';
 
 const exitHandler = () => {
     if (!server) return process.exit(1);

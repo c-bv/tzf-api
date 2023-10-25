@@ -1,8 +1,8 @@
 import { authController } from '@controllers';
-import asyncRouter from '@utils/asyncRouter';
+import { asyncRouter } from '@utils/asyncRouter';
 import express from 'express';
 
-const router = express.Router();
+export const router = express.Router();
 
 router.route('/register').post(authController.register);
 
@@ -15,4 +15,4 @@ router.route('/login').post(authController.login);
 // router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
 // router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
 
-export default asyncRouter(router);
+export const authRouter = asyncRouter(router);
