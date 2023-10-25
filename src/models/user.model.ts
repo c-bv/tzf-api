@@ -1,19 +1,10 @@
 import { config } from '@config/config';
-import { TRole, TUser } from '@custom-types/custom-types';
 import bcrypt from 'bcrypt';
-import mongoose, { Document, Model, Schema } from 'mongoose';
+import mongoose, { Document, InferSchemaType, Model, Schema } from 'mongoose';
 
-export interface IUserDocument extends TUser, Document {
-    setPassword: (password: string) => Promise<void>;
-    checkPassword: (password: string) => Promise<boolean>;
-}
-
-export interface IUserModel extends Model<IUserDocument> {
-    isEmailTaken(email: string): Promise<boolean>;
-}
-
-const userShema: Schema<IUserDocument> = new Schema(
+const userShema = new mongoose.Schema(
     {
+        _id: { type: Schema.Types.ObjectId, auto: true },
         firstName: { type: String, required: true },
         lastName: { type: String, required: { message: 'Last name is required' } },
         email: {
@@ -35,7 +26,7 @@ const userShema: Schema<IUserDocument> = new Schema(
         },
         role: {
             type: String,
-            enum: [] as TRole[],
+            enum: ['admin', 'buyer', 'seller', 'consultingBuyer', 'consultingSeller'],
             required: { message: 'Role is required' }
         },
         companyId: {
@@ -71,9 +62,19 @@ userShema.statics.isEmailTaken = async function (email: string): Promise<boolean
     return !!user;
 };
 
-userShema.pre('save', async function (): Promise<void> {
+userShema.pre('save', async function (this: TUserDocument): Promise<void> {
     if (!this.isModified('password')) return;
     await this.setPassword(this.password as string);
 });
 
-export const UserModel = mongoose.model<IUserDocument, IUserModel>('User', userShema);
+export type TUser = InferSchemaType<typeof userShema>;
+export type TUserDocument = TUser &
+    Document & {
+        setPassword: (password: string) => Promise<void>;
+        checkPassword: (password: string) => Promise<boolean>;
+    };
+export type TUserModel = Model<TUserDocument> & {
+    isEmailTaken: (email: string) => Promise<boolean>;
+};
+
+export const UserModel = mongoose.model<TUserDocument, TUserModel>('User', userShema);

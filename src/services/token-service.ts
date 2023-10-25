@@ -1,9 +1,9 @@
 import { config } from '@config/config';
-import { TUser } from '@custom-types/custom-types';
+import { TUser } from '@models';
 import jwt from 'jsonwebtoken';
 
 export const generateAuthToken = (user: TUser) => {
-    return jwt.sign({ _id: user.id }, config.jwt.secret as string, { expiresIn: config.jwt.expiresIn });
+    return jwt.sign({ _id: user._id }, config.jwt.secret, { expiresIn: config.jwt.expiresIn });
 };
 
 export const verifyAuthToken = (token: string) => {
