@@ -1,6 +1,7 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import { TAuthRequest } from '@custom-types/custom-types';
+import { NextFunction, Response, Router } from 'express';
 
-const asyncHandler = (fn: any) => async (req: Request, res: Response, next: NextFunction) => {
+const asyncHandler = (fn: any) => async (req: TAuthRequest, res: Response, next: NextFunction) => {
     try {
         return await Promise.resolve(fn(req, res, next));
     } catch (err) {

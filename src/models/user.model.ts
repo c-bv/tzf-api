@@ -14,7 +14,7 @@ export type TUserModel = Model<TUserDocument> & {
 
 const userShema = new mongoose.Schema(
     {
-        _id: { type: Schema.Types.ObjectId, auto: true },
+        _id: { type: Schema.Types.ObjectId, auto: true, required: true },
         firstName: { type: String, required: true },
         lastName: { type: String, required: { message: 'Last name is required' } },
         email: {
@@ -37,7 +37,7 @@ const userShema = new mongoose.Schema(
         role: {
             type: String,
             enum: ['admin', 'buyer', 'seller', 'consultingBuyer', 'consultingSeller'],
-            required: { message: 'Role is required' }
+            required: true
         },
         companyId: {
             type: Schema.Types.ObjectId,

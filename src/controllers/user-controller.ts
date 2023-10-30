@@ -1,25 +1,23 @@
-import { tokenService, userService } from '@services';
+import { TAuthRequest } from '@custom-types/custom-types';
+import { userService } from '@services';
 import { ApiError } from '@utils/ApiError';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import httpStatus from 'http-status';
 
-export const getUser = async (req: Request, res: Response) => {
-    const user = await userService.getUserById(req.params.id);
+export const getUser = async (req: TAuthRequest, res: Response) => {
+    if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
+
+    const user = await userService.getUserById(req.params._id);
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-    res.send(user);
+
+    res.status(httpStatus.OK).send(user);
 };
 
-export const checkUser = async (req: Request, res: Response) => {
-    if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer '))
-        throw new ApiError(401, 'Unauthorized - no token provided');
+export const checkUser = async (req: TAuthRequest, res: Response) => {
+    if (!req.user || !req.user._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
 
-    const token = req.headers.authorization.split(' ')[1];
-
-    const decoded = tokenService.verifyAuthToken(token) as any;
-    if (!decoded) throw new ApiError(401, 'Unauthorized - invalid token');
-
-    const user = await userService.getUserById(decoded.id);
-    if (!user) throw new ApiError(404, 'User not found');
+    const user = await userService.getUserById(req.user._id.toString());
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
 
     res.status(httpStatus.OK).send(user);
 };

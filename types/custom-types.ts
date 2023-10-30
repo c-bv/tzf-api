@@ -1,9 +1,7 @@
 import { TUser } from '@models';
+import { Request } from 'express';
 
-export interface IRequestUser extends Request {
-    user: TUser;
-}
-
-export type IAuthRequest = IRequestUser & {
-    headers: { authorization: string };
+export type TAuthRequest = Request & {
+    user?: TUser;
+    authorization?: string;
 };
