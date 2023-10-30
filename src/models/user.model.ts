@@ -2,6 +2,16 @@ import { config } from '@config/config';
 import bcrypt from 'bcrypt';
 import mongoose, { Document, InferSchemaType, Model, Schema } from 'mongoose';
 
+export type TUser = InferSchemaType<typeof userShema>;
+export type TUserDocument = TUser &
+    Document & {
+        setPassword: (password: string) => Promise<void>;
+        checkPassword: (password: string) => Promise<boolean>;
+    };
+export type TUserModel = Model<TUserDocument> & {
+    isEmailTaken: (email: string) => Promise<boolean>;
+};
+
 const userShema = new mongoose.Schema(
     {
         _id: { type: Schema.Types.ObjectId, auto: true },
@@ -66,15 +76,5 @@ userShema.pre('save', async function (this: TUserDocument): Promise<void> {
     if (!this.isModified('password')) return;
     await this.setPassword(this.password as string);
 });
-
-export type TUser = InferSchemaType<typeof userShema>;
-export type TUserDocument = TUser &
-    Document & {
-        setPassword: (password: string) => Promise<void>;
-        checkPassword: (password: string) => Promise<boolean>;
-    };
-export type TUserModel = Model<TUserDocument> & {
-    isEmailTaken: (email: string) => Promise<boolean>;
-};
 
 export const UserModel = mongoose.model<TUserDocument, TUserModel>('User', userShema);

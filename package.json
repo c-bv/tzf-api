@@ -6,10 +6,10 @@
     "scripts": {
         "start": "node dist/index.js",
         "dev": "export NODE_ENV=development && nodemon src/index.ts",
-        "lint": "eslint --ext  .ts .",
+        "build": "tsc",
+        "lint": "eslint --ext .ts src",
         "format": "prettier --write './**/*.{js,ts,css,md,json}' --config ./.prettierrc",
         "prepare": "husky install",
-        "build": "tsc",
         "test": "mocha --require ts-node/register src/test/**/*.ts"
     },
     "repository": {
