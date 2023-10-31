@@ -14,9 +14,9 @@ export type TUserModel = Model<TUserDocument> & {
 
 const userShema = new mongoose.Schema(
     {
-        _id: { type: Schema.Types.ObjectId, auto: true, required: true },
-        firstName: { type: String, required: true },
-        lastName: { type: String, required: { message: 'Last name is required' } },
+        _id: { type: Schema.Types.ObjectId, auto: true },
+        firstName: { type: String, required: [true, 'First name is required'] },
+        lastName: { type: String, required: [true, 'Last name is required'] },
         email: {
             type: String,
             required: true,
@@ -36,8 +36,11 @@ const userShema = new mongoose.Schema(
         },
         role: {
             type: String,
-            enum: ['admin', 'buyer', 'seller', 'consultingBuyer', 'consultingSeller'],
-            required: true
+            enum: {
+                values: ['admin', 'buyer', 'seller', 'consultingBuyer', 'consultingSeller'],
+                message: '{VALUE} is not supported'
+            },
+            required: [true, 'Role is required']
         },
         companyId: {
             type: Schema.Types.ObjectId,
