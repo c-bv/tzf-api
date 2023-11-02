@@ -17,7 +17,7 @@ type RegisterUserData = {
  * @returns A promise that resolves with the created user document.
  * @throws ApiError with status 400 if the email is already taken.
  */
-export const createUser = async (userData: RegisterUserData): Promise<TUserDocument> => {
+export const createUser = async (userData: RegisterUserData): Promise<Partial<TUserDocument>> => {
     if (await UserModel.isEmailTaken(userData.email)) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
     }
@@ -39,7 +39,7 @@ export const getUserByEmail = async (email: string): Promise<TUserDocument | nul
  * @param password - Whether or not to include the user's password in the retrieved document.
  * @returns A Promise that resolves to the retrieved user document, or null if no user was found.
  */
-export const getUserById = async (id: string, password?: boolean): Promise<TUserDocument> => {
+export const getUserById = async (id: string, password?: boolean): Promise<Partial<TUserDocument> | null> => {
     return await UserModel.findById(id).select(!password ? '-password' : '');
 };
 

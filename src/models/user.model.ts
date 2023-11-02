@@ -19,7 +19,7 @@ const userShema = new mongoose.Schema(
         lastName: { type: String, required: [true, 'Last name is required'] },
         email: {
             type: String,
-            required: true,
+            required: [true, 'Email is required'],
             unique: true,
             validate: {
                 validator: (email: string) => /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email),
@@ -28,7 +28,7 @@ const userShema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: { message: 'Password is required' },
+            required: [true, 'Password is required'],
             validate: {
                 validator: (password: string) => password.length >= 6,
                 message: 'Password must be at least 6 characters long'

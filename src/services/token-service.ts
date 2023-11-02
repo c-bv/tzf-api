@@ -12,7 +12,7 @@ export type TDecodedToken = JwtPayload & {
  * @param user - The user object to generate the token for.
  * @returns The generated authentication token.
  */
-export const generateAuthToken = (user: TUser): string => {
+export const generateAuthToken = (user: Partial<TUser>): string => {
     return jwt.sign({ _id: user._id, role: user.role }, config.jwt.secret, { expiresIn: config.jwt.expiresIn });
 };
 
