@@ -21,6 +21,8 @@ const userShema = new mongoose.Schema(
             type: String,
             required: [true, 'Email is required'],
             unique: true,
+            trim: true,
+            lowercase: true,
             validate: {
                 validator: (email: string) => /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email),
                 message: 'Email is not valid'

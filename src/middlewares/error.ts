@@ -10,7 +10,7 @@ export const converter = (err: any, req: Request, res: Response, next: NextFunct
     if (!(err instanceof ApiError)) {
         error = new ApiError(
             err.status || error instanceof mongoose.Error ? httpStatus.BAD_REQUEST : httpStatus.INTERNAL_SERVER_ERROR,
-            err.message || httpStatus[httpStatus.INTERNAL_SERVER_ERROR],
+            err.message || httpStatus[err.status],
             err.stack
         );
     }

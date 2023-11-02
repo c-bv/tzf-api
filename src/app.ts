@@ -27,12 +27,11 @@ config.env === 'production' && app.use('/v1/auth', rateLimiter);
 app.use('/v1', router);
 
 app.get('/status', (req: Request, res: Response) => {
-    res.status(200).send('OK');
+    res.status(200).send(`${httpStatus.OK} - ${httpStatus[200]}`);
 });
 
 app.use((req: Request, res: Response, next: any) => {
-    next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
+    next(new ApiError(httpStatus.NOT_FOUND, `${httpStatus[404]} - Route ${req.originalUrl} does not exist.`));
 });
-
 app.use(error.converter);
 app.use(error.handler);
