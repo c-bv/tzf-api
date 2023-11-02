@@ -20,7 +20,7 @@ export const config = {
         cop27: process.env.COP27_URL!
     },
     db: {
-        uri: process.env.DB_URI!,
+        uri: process.env.DB_URI!
     },
     jwt: {
         secret: process.env.JWT_SECRET!,
