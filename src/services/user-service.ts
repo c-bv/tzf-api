@@ -40,7 +40,7 @@ export const getUserByEmail = async (email: string): Promise<TUserDocument | nul
  * @returns A Promise that resolves to the retrieved user document, or null if no user was found.
  */
 export const getUserById = async (id: string, password?: boolean): Promise<TUserDocument> => {
-    return await UserModel.findById(id).select(password ? '+password' : '');
+    return await UserModel.findById(id).select(!password ? '-password' : '');
 };
 
 /**
