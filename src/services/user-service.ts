@@ -39,8 +39,8 @@ export const getUserByEmail = async (email: string): Promise<TUserDocument | nul
  * @param password - Whether or not to include the user's password in the retrieved document.
  * @returns A Promise that resolves to the retrieved user document, or null if no user was found.
  */
-export const getUserById = async (id: string, password?: boolean): Promise<TUserDocument | null> => {
-    return await UserModel.findById(id).select(!password ? '-password' : '');
+export const getUserById = async (id: string, password?: boolean): Promise<TUserDocument> => {
+    return await UserModel.findById(id).select(password ? '+password' : '');
 };
 
 /**

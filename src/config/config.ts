@@ -21,10 +21,6 @@ export const config = {
     },
     db: {
         uri: process.env.DB_URI!,
-        config: {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        }
     },
     jwt: {
         secret: process.env.JWT_SECRET!,
