@@ -2,7 +2,7 @@ import { config } from '@config/config';
 import express from 'express';
 import { authRouter } from './auth-router';
 import { docRouter } from './doc-router';
-import { userRouter } from './user-router';
+import { usersRouter } from './users-router';
 
 const router = express.Router();
 
@@ -12,8 +12,8 @@ const defaultRoutes = [
         route: authRouter
     },
     {
-        path: '/user',
-        route: userRouter
+        path: '/users',
+        route: usersRouter
     }
 ];
 
