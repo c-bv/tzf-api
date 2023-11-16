@@ -42,11 +42,9 @@ export const getUserById = async (id: string, password?: boolean): Promise<Parti
 };
 
 /**
- * Queries the database for users based on the provided filter and options.
- * @param filter - The filter object used to query the database.
- * @param options - The options object used to query the database.
- * @returns A Promise that resolves to an array of TUserDocument objects or null.
+ * Retrieves all users from the database.
+ * @returns A Promise that resolves to an array of TUserDocument or null if no users are found.
  */
-export const queryUsers = async (filter: object, options: object): Promise<TUserDocument[] | null> => {
-    return await UserModel.find(filter, null, options);
+export const getUsers = async (): Promise<TUserDocument[] | null> => {
+    return await UserModel.find();
 };

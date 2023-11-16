@@ -21,6 +21,17 @@ export const refreshUser = async (req: TAuthRequest, res: Response): Promise<voi
 };
 
 /**
+ * Get all users.
+ * @param {TAuthRequest} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<void>}
+ */
+export const getUsers = async (req: TAuthRequest, res: Response): Promise<void> => {
+    const users = await userService.getUsers();
+    res.status(httpStatus.OK).send(users);
+};
+
+/**
  * Get a user by id
  * @param {TAuthRequest} req - The request object containing the user id
  * @param {Response} res - The response object

@@ -1,9 +1,18 @@
 import { userController } from '@controllers';
-import { roleGroupsByAccessLevel, verifyAuthAndRole, verifyOwner } from '@middlewares/auth';
 import { asyncRouter } from '@utils/asyncRouter';
 import express from 'express';
 
 const router = express.Router();
+
+router
+    .route('/')
+    /**
+     * GET all users.
+     * @name GET /v1/users
+     * @function
+     * @memberof module:userRouter
+     */
+    .get(userController.getUsers);
 
 router
     .route('/me')
@@ -13,7 +22,7 @@ router
      * @function
      * @memberof module:userRouter
      */
-    .get(verifyAuthAndRole(roleGroupsByAccessLevel.all), userController.refreshUser);
+    .get(userController.refreshUser);
 
 router
     .route('/:_id')
@@ -24,6 +33,6 @@ router
      * @memberof module:userRouter
      * @param {string} _id - The ID of the user to retrieve.
      */
-    .get(verifyAuthAndRole(roleGroupsByAccessLevel.all), verifyOwner, userController.getUser);
+    .get(userController.getUser);
 
 export const userRouter = asyncRouter(router);
