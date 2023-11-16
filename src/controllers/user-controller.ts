@@ -29,6 +29,7 @@ export const refreshUser = async (req: TAuthRequest, res: Response): Promise<voi
  */
 export const getUser = async (req: TAuthRequest, res: Response): Promise<void> => {
     if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
+
     const user = await userService.getUserById(req.params._id);
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
 

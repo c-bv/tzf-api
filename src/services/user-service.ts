@@ -18,9 +18,7 @@ type RegisterUserData = {
  * @throws ApiError with status 400 if the email is already taken.
  */
 export const createUser = async (userData: RegisterUserData): Promise<Partial<TUserDocument>> => {
-    if (await UserModel.isEmailTaken(userData.email)) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
-    }
+    if (await UserModel.isEmailTaken(userData.email)) throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
     return await UserModel.create(userData);
 };
 
