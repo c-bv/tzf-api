@@ -1,1 +1,1 @@
-export { TUser, TUserDocument, TUserModel, UserModel } from './user.model';
+export { TUser, TUserDocument, TUserModel, UserModel } from './user-model';
