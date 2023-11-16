@@ -1,17 +1,14 @@
-import { config } from '@config/config';
+import { loadUser } from '@/middlewares/auth';
 import express from 'express';
 import { authRouter } from './auth-router';
-import { docRouter } from './doc-router';
-import { userRouter } from './user-router';
 import { companyRouter } from './company-router';
+import { docRouter } from './doc-router';
+import { publicRouter } from './public-router';
+import { userRouter } from './user-router';
 
 const router = express.Router();
 
-const defaultRoutes = [
-    {
-        path: '/auth',
-        route: authRouter
-    },
+const authRoutes = [
     {
         path: '/users',
         route: userRouter
@@ -22,20 +19,23 @@ const defaultRoutes = [
     }
 ];
 
-const devRoutes = [
+const publicRoutes = [
+    {
+        path: '/auth',
+        route: authRouter
+    },
+    {
+        path: '/public',
+        route: publicRouter
+    },
     {
         path: '/doc',
         route: docRouter
     }
 ];
 
-defaultRoutes.forEach(route => {
-    router.use(route.path, route.route);
-});
+authRoutes.forEach(route => router.use(route.path, loadUser, route.route));
 
-config.env === 'development' &&
-    devRoutes.forEach(route => {
-        router.use(route.path, route.route);
-    });
+publicRoutes.forEach(route => router.use(route.path, route.route));
 
 export { router };
