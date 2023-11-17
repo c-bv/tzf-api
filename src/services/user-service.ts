@@ -1,5 +1,4 @@
-import { TUser, TUserDocument } from '@models';
-import { UserModel } from '@models';
+import { TUser, TUserDocument, UserModel } from '@models';
 import { ApiError } from '@utils/ApiError';
 import httpStatus from 'http-status';
 
@@ -47,4 +46,23 @@ export const getUserById = async (id: string, password?: boolean): Promise<Parti
  */
 export const getUsers = async (): Promise<TUserDocument[] | null> => {
     return await UserModel.find();
+};
+
+/**
+ * Deletes a user by their ID.
+ * @param id The ID of the user to delete.
+ * @returns A promise that resolves to the deleted user document, or null if the user was not found.
+ */
+export const deleteUser = async (id: string): Promise<TUserDocument | null> => {
+    return await UserModel.findByIdAndDelete(id);
+};
+
+/**
+ * Updates a user by their ID.
+ * @param id The ID of the user to update.
+ * @param update The update object.
+ * @returns A promise that resolves to the updated user document, or null if the user was not found.
+ */
+export const updateUser = async (id: string, update: Partial<TUser>): Promise<TUserDocument | null> => {
+    return await UserModel.findByIdAndUpdate(id, update, { new: true });
 };

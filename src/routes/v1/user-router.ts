@@ -1,5 +1,5 @@
-import { restrictToRoles, restrictToSelf, ROLES_GROUPS } from '@middlewares/auth';
 import { userController } from '@controllers';
+import { restrictToRoles, restrictToSelf, ROLES_GROUPS } from '@middlewares/auth';
 import { asyncRouter } from '@utils/asyncRouter';
 import express from 'express';
 
@@ -34,6 +34,22 @@ router
      * @memberof module:userRouter
      * @param {string} _id - The ID of the user to retrieve.
      */
-    .get(restrictToSelf, userController.getUser);
+    .get(restrictToSelf, userController.getUser)
+    /**
+     * DELETE user by ID.
+     * @name DELETE /v1/users/:_id
+     * @function
+     * @memberof module:userRouter
+     * @param {string} _id - The ID of the user to delete.
+     */
+    .delete(restrictToRoles(...ROLES_GROUPS.admin), userController.deleteUser)
+    /**
+     * PATCH user by ID.
+     * @name PATCH /v1/users/:_id
+     * @function
+     * @memberof module:userRouter
+     * @param {string} _id - The ID of the user to update.
+     */
+    .patch(restrictToSelf, userController.updateUser);
 
 export const userRouter = asyncRouter(router);

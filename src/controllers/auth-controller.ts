@@ -11,6 +11,7 @@ import httpStatus from 'http-status';
 export const register = async (req: Request, res: Response) => {
     const user = await userService.createUser(req.body);
     const token = tokenService.generateAuthToken(user);
+
     res.status(httpStatus.CREATED).send({ user, token });
 };
 
@@ -23,5 +24,6 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
     const user = await authService.loginUserWithEmailAndPassword(req.body.email, req.body.password);
     const token = tokenService.generateAuthToken(user);
+
     res.status(httpStatus.OK).send({ user, token });
 };

@@ -28,6 +28,7 @@ export const refreshUser = async (req: TAuthRequest, res: Response): Promise<voi
  */
 export const getUsers = async (req: TAuthRequest, res: Response): Promise<void> => {
     const users = await userService.getUsers();
+
     res.status(httpStatus.OK).send(users);
 };
 
@@ -42,6 +43,38 @@ export const getUser = async (req: TAuthRequest, res: Response): Promise<void> =
     if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
 
     const user = await userService.getUserById(req.params._id);
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+
+    res.status(httpStatus.OK).send(user);
+};
+
+/**
+ * Deletes a user.
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns A promise that resolves to void.
+ * @throws {ApiError} If the user id is missing or if the user is not found.
+ */
+export const deleteUser = async (req: TAuthRequest, res: Response): Promise<void> => {
+    if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
+
+    const user = await userService.deleteUser(req.params._id);
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+
+    res.status(httpStatus.OK).send(user);
+};
+
+/**
+ * Updates a user.
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns A promise that resolves to void.
+ * @throws {ApiError} If the user id is missing or if the user is not found.
+ */
+export const updateUser = async (req: TAuthRequest, res: Response): Promise<void> => {
+    if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
+
+    const user = await userService.updateUser(req.params._id, req.body);
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
 
     res.status(httpStatus.OK).send(user);
