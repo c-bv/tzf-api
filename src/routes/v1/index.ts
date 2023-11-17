@@ -1,4 +1,4 @@
-import { loadUser } from '@/middlewares/auth';
+import { loadUser } from '@middlewares/auth';
 import express from 'express';
 import { authRouter } from './auth-router';
 import { companyRouter } from './company-router';

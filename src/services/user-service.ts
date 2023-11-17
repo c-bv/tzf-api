@@ -1,4 +1,4 @@
-import { TUser, TUserDocument } from '@/models';
+import { TUser, TUserDocument } from '@models';
 import { UserModel } from '@models';
 import { ApiError } from '@utils/ApiError';
 import httpStatus from 'http-status';

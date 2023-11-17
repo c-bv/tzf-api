@@ -1,11 +1,8 @@
 import * as dotenv from 'dotenv';
-import * as path from 'path';
 
 export type TConfig = typeof config;
 
-dotenv.config({
-    path: path.join(__dirname, `../../.env.${process.env.NODE_ENV}`)
-});
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 export const config = {
     env: process.env.NODE_ENV!,

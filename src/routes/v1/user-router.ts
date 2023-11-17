@@ -1,4 +1,4 @@
-import { restrictToRoles, restrictToSelf, ROLES_GROUPS } from '@/middlewares/auth';
+import { restrictToRoles, restrictToSelf, ROLES_GROUPS } from '@middlewares/auth';
 import { userController } from '@controllers';
 import { asyncRouter } from '@utils/asyncRouter';
 import express from 'express';

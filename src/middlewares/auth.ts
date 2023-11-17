@@ -1,4 +1,4 @@
-import { TUser } from '@/models';
+import { TUser } from '@models';
 import { TAuthRequest } from '@custom-types/custom-types';
 import { tokenService } from '@services';
 import { ApiError } from '@utils/ApiError';
