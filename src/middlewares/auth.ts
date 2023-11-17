@@ -36,9 +36,10 @@ export const loadUser = async (req: TAuthRequest, res: Response, next: NextFunct
 
 export const restrictToSelf = (req: TAuthRequest, res: Response, next: NextFunction) => {
     if (!req.user || !req.user._id) return next(new ApiError(httpStatus.BAD_REQUEST, 'User id is required'));
-    if (req.user.role === 'admin') return next();
-    if (req.params._id !== req.user._id.toString())
+    if (ROLES_GROUPS.admin.includes(req.user.role as any)) next();
+    if (req.params._id !== req.user._id.toString()) {
         return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. This is not your resource.'));
+    }
     next();
 };
 
