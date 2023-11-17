@@ -1,5 +1,5 @@
-import { TUser } from '@models';
 import { TAuthRequest } from '@custom-types/custom-types';
+import { TUser } from '@models';
 import { tokenService } from '@services';
 import { ApiError } from '@utils/ApiError';
 import { NextFunction, Response } from 'express';
@@ -36,6 +36,7 @@ export const loadUser = async (req: TAuthRequest, res: Response, next: NextFunct
 
 export const restrictToSelf = (req: TAuthRequest, res: Response, next: NextFunction) => {
     if (!req.user || !req.user._id) return next(new ApiError(httpStatus.BAD_REQUEST, 'User id is required'));
+    if (req.user.role === 'admin') return next();
     if (req.params._id !== req.user._id.toString())
         return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. This is not your resource.'));
     next();
