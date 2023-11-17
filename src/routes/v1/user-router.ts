@@ -1,3 +1,4 @@
+import { restrictToRoles, restrictToSelf, ROLES_GROUPS } from '@/middlewares/auth';
 import { userController } from '@controllers';
 import { asyncRouter } from '@utils/asyncRouter';
 import express from 'express';
@@ -12,7 +13,7 @@ router
      * @function
      * @memberof module:userRouter
      */
-    .get(userController.getUsers);
+    .get(restrictToRoles(...ROLES_GROUPS.admin), userController.getUsers);
 
 router
     .route('/me')
@@ -33,6 +34,6 @@ router
      * @memberof module:userRouter
      * @param {string} _id - The ID of the user to retrieve.
      */
-    .get(userController.getUser);
+    .get(restrictToSelf, userController.getUser);
 
 export const userRouter = asyncRouter(router);

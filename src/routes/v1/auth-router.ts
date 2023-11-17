@@ -1,8 +1,3 @@
-/**
- * @file This file defines the authentication routes for the API.
- * @summary This file contains the endpoints for user authentication, such as registering, logging in, and resetting passwords.
- */
-
 import { authController } from '@controllers';
 import { asyncRouter } from '@utils/asyncRouter';
 import express from 'express';
