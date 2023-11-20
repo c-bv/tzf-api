@@ -35,6 +35,7 @@ router
      * @param {string} _id - The ID of the user to retrieve.
      */
     .get(restrictToSelf, userController.getUser)
+
     /**
      * DELETE user by ID.
      * @name DELETE /v1/users/:_id
@@ -43,6 +44,7 @@ router
      * @param {string} _id - The ID of the user to delete.
      */
     .delete(restrictToRoles(...ROLES_GROUPS.admin), userController.deleteUser)
+
     /**
      * PATCH user by ID.
      * @name PATCH /v1/users/:_id
@@ -51,5 +53,16 @@ router
      * @param {string} _id - The ID of the user to update.
      */
     .patch(restrictToSelf, userController.updateUser);
+
+router
+    .route('/:_id/activate')
+    /**
+     * PATCH user activation status by ID.
+     * @name PATCH /v1/users/:_id/activate
+     * @function
+     * @memberof module:userRouter
+     * @param {string} _id - The ID of the user to toggle activation status.
+     */
+    .patch(restrictToRoles(...ROLES_GROUPS.admin), userController.toggleUserActive);
 
 export const userRouter = asyncRouter(router);
