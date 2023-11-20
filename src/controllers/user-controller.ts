@@ -81,7 +81,7 @@ export const updateUser = async (req: TAuthRequest, res: Response): Promise<void
 };
 
 /**
- * Toggles a user's active status.
+ * Toggles the active status of a user.
  * @param req - The request object.
  * @param res - The response object.
  * @returns A Promise that resolves to void.
@@ -95,6 +95,25 @@ export const toggleUserActive = async (req: TAuthRequest, res: Response): Promis
 
     user.active = !user.active;
     await userService.updateUser(req.params._id, { active: user.active });
+
+    res.status(httpStatus.OK).send(user);
+};
+
+/**
+ * Toggles the verification status of a user.
+ * @param req - The request object containing the user id in the params.
+ * @param res - The response object to send the updated user.
+ * @returns A Promise that resolves to void.
+ * @throws {ApiError} If the user id is missing or the user is not found.
+ */
+export const toggleUserVerified = async (req: TAuthRequest, res: Response): Promise<void> => {
+    if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
+
+    const user = await userService.getUserById(req.params._id);
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+
+    user.verified = !user.verified;
+    await userService.updateUser(req.params._id, { verified: user.verified });
 
     res.status(httpStatus.OK).send(user);
 };

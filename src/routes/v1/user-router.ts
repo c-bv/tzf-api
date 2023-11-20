@@ -65,4 +65,15 @@ router
      */
     .patch(restrictToRoles(...ROLES_GROUPS.admin), userController.toggleUserActive);
 
+router
+    .route('/:_id/verify')
+    /**
+     * PATCH user verification status by ID.
+     * @name PATCH /v1/users/:_id/verify
+     * @function
+     * @memberof module:userRouter
+     * @param {string} _id - The ID of the user to toggle verification status.
+     */
+    .patch(restrictToRoles(...ROLES_GROUPS.admin), userController.toggleUserVerified);
+
 export const userRouter = asyncRouter(router);
