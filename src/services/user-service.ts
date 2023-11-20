@@ -63,6 +63,6 @@ export const deleteUser = async (id: string): Promise<TUserDocument | null> => {
  * @param update The update object.
  * @returns A promise that resolves to the updated user document, or null if the user was not found.
  */
-export const updateUser = async (id: string, update: Partial<TUser>): Promise<TUserDocument | null> => {
-    return await UserModel.findByIdAndUpdate(id, update, { new: true });
+export const updateUser = async (id: string, update: Partial<TUser>): Promise<Partial<TUserDocument> | null> => {
+    return await UserModel.findByIdAndUpdate(id, update, { new: true }).select('-password');
 };
