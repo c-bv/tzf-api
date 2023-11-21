@@ -18,3 +18,29 @@ export const getCompany = async (req: TAuthRequest, res: Response) => {
 
     res.status(httpStatus.OK).send(company);
 };
+
+/**
+ * Toggles the white label status of a company.
+ * @param req - The request object containing the company id.
+ * @param res - The response object.
+ * @returns A Promise that resolves to the updated company object.
+ * @throws {ApiError} If the company id is missing or if the company is not found.
+ */
+export const toggleWhiteLabel = async (req: TAuthRequest, res: Response) => {
+    if (!req.params.id) throw new ApiError(httpStatus.BAD_REQUEST, 'Company id is required');
+
+    const company = await companyService.getCompanyById(req.params.id);
+    if (!company) throw new ApiError(httpStatus.NOT_FOUND, 'Company not found');
+
+    if (!company.whiteLabelId) {
+        // TODO - add white label id to company
+        company.whiteLabelId = '123';
+    }
+
+    await companyService.updateCompany(req.params.id, {
+        whiteLabelId: company.whiteLabelId,
+        canUseWhiteLabel: !company.canUseWhiteLabel
+    });
+
+    res.status(httpStatus.OK).send(company);
+};
