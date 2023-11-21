@@ -76,4 +76,15 @@ router
      */
     .patch(restrictToRoles(...ROLES_GROUPS.admin), userController.toggleUserVerified);
 
+router
+    .route('/company/:companyId')
+    /**
+     * GET users by company ID.
+     * @name GET /v1/users/company/:companyId
+     * @function
+     * @memberof module:userRouter
+     * @param {string} companyId - The ID of the company.
+     */
+    .get(userController.getUsersByCompanyId);
+
 export const userRouter = asyncRouter(router);

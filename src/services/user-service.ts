@@ -41,6 +41,15 @@ export const getUserById = async (id: string, password?: boolean): Promise<Parti
 };
 
 /**
+ * Retrieves users by company ID.
+ * @param companyId - The ID of the company.
+ * @returns A promise that resolves to an array of user documents or null.
+ */
+export const getUsersByCompanyId = async (companyId: string): Promise<TUserDocument[] | null> => {
+    return await UserModel.find({ companyId }).select('-password');
+};
+
+/**
  * Retrieves all users from the database.
  * @returns A Promise that resolves to an array of TUserDocument or null if no users are found.
  */
