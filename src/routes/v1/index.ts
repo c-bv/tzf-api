@@ -3,6 +3,7 @@ import express from 'express';
 import { authRouter } from './auth-router';
 import { companyRouter } from './company-router';
 import { docRouter } from './doc-router';
+import { projectRouter } from './project-router';
 import { publicRouter } from './public-router';
 import { userRouter } from './user-router';
 
@@ -16,6 +17,10 @@ const authRoutes = [
     {
         path: '/companies',
         route: companyRouter
+    },
+    {
+        path: '/projects',
+        route: projectRouter
     }
 ];
 

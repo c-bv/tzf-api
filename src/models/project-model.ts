@@ -1,4 +1,4 @@
-import mongoose, { Document, InferSchemaType, Model } from 'mongoose';
+import mongoose, { Document, InferSchemaType, Model, Schema } from 'mongoose';
 
 export type TProject = InferSchemaType<typeof projectShema>;
 export type TProjectDocument = TProject & Document;
@@ -6,6 +6,7 @@ export type TProjectModel = Model<TProjectDocument>;
 
 const projectShema = new mongoose.Schema(
     {
+        _id: { type: Schema.Types.ObjectId, auto: true },
         name: { type: String },
         userId: { type: String },
         companyId: { type: String },
