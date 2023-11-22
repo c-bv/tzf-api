@@ -85,6 +85,6 @@ router
      * @memberof module:userRouter
      * @param {string} companyId - The ID of the company.
      */
-    .get(userController.getUsersByCompanyId);
+    .get(userController.getUsersByCompany);
 
 export const userRouter = asyncRouter(router);

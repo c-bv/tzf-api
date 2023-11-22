@@ -55,7 +55,7 @@ export const getUsers = async (req: TAuthRequest, res: Response): Promise<void> 
  * @returns A Promise that resolves to void.
  * @throws {ApiError} If the company ID is missing.
  */
-export const getUsersByCompanyId = async (req: TAuthRequest, res: Response): Promise<void> => {
+export const getUsersByCompany = async (req: TAuthRequest, res: Response): Promise<void> => {
     if (!req.params.companyId) throw new ApiError(httpStatus.BAD_REQUEST, 'Company id is required');
 
     const users = await userService.getUsersByCompanyId(req.params.companyId);
