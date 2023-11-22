@@ -9,11 +9,10 @@ const router = express.Router();
 router
     .route('/')
     /**
-     * GET project by ID.
-     * @name GET /v1/projects/:_id
+     * GET all projects.
+     * @name GET /v1/projects
      * @function
      * @memberof module:projectRouter
-     * @param {string} _id - The ID of the project to retrieve.
      */
     .get(restrictToRoles(...ROLES_GROUPS.all), projectController.getProjects);
 
@@ -26,7 +25,16 @@ router
      * @memberof module:projectRouter
      * @param {string} _id - The ID of the project to retrieve.
      */
-    .get(restrictToRoles(...ROLES_GROUPS.all), projectController.getProject);
+    .get(restrictToRoles(...ROLES_GROUPS.all), projectController.getProject)
+
+    /**
+     * PATCH project by ID.
+     * @name PATCH /v1/projects/:_id
+     * @function
+     * @memberof module:projectRouter
+     * @param {string} _id - The ID of the project to update.
+     */
+    .patch(restrictToRoles(...ROLES_GROUPS.admin), projectController.updateProject);
 
 router
     .route('/:_id/activate')
