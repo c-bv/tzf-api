@@ -85,6 +85,6 @@ router
      * @memberof module:userRouter
      * @param {string} companyId - The ID of the company.
      */
-    .get(userController.getUsersByCompany);
+    .get(restrictToRoles(...ROLES_GROUPS.admin), userController.getUsersByCompany);
 
 export const userRouter = asyncRouter(router);

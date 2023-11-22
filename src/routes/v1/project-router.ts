@@ -1,4 +1,6 @@
 import { projectController } from '@controllers';
+import { restrictToRoles, ROLES_GROUPS } from '@middlewares/auth';
+
 import { asyncRouter } from '@utils/asyncRouter';
 import express from 'express';
 
@@ -13,7 +15,7 @@ router
      * @memberof module:projectRouter
      * @param {string} _id - The ID of the project to retrieve.
      */
-    .get(projectController.getProjects);
+    .get(restrictToRoles(...ROLES_GROUPS.all), projectController.getProjects);
 
 router
     .route('/:_id')
@@ -24,7 +26,7 @@ router
      * @memberof module:projectRouter
      * @param {string} _id - The ID of the project to retrieve.
      */
-    .get(projectController.getProject);
+    .get(restrictToRoles(...ROLES_GROUPS.all), projectController.getProject);
 
 router
     .route('/:_id/activate')
@@ -35,7 +37,7 @@ router
      * @memberof module:projectRouter
      * @param {string} _id - The ID of the project to update.
      */
-    .patch(projectController.toggleProjectActive);
+    .patch(restrictToRoles(...ROLES_GROUPS.admin), projectController.toggleProjectActive);
 
 router
     .route('/:_id/publish')
@@ -46,6 +48,6 @@ router
      * @memberof module:projectRouter
      * @param {string} _id - The ID of the project to update.
      */
-    .patch(projectController.toggleProjectPublished);
+    .patch(restrictToRoles(...ROLES_GROUPS.admin), projectController.toggleProjectPublished);
 
 export const projectRouter = asyncRouter(router);

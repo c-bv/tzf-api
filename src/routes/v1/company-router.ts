@@ -14,7 +14,7 @@ router
      * @memberof module:companyRouter
      * @param {string} _id - The ID of the company to retrieve.
      */
-    .get(companyController.getCompany);
+    .get(restrictToRoles(...ROLES_GROUPS.all), companyController.getCompany);
 
 router
     .route('/:id/white-label')
