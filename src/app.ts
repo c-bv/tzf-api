@@ -30,7 +30,7 @@ app.get('/status', (req: Request, res: Response) => {
     res.status(200).send(`${httpStatus.OK} - ${httpStatus[200]}`);
 });
 
-app.use((req: Request, res: Response, next: any) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
     next(new ApiError(httpStatus.NOT_FOUND, `${httpStatus[404]} - Route ${req.originalUrl} does not exist.`));
 });
 app.use(error.converter);

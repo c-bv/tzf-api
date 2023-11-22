@@ -8,7 +8,7 @@ const projectShema = new mongoose.Schema(
     {
         _id: { type: Schema.Types.ObjectId, auto: true },
         name: { type: String },
-        userId: { type: String },
+        userId: { type: String, required: true },
         companyId: { type: String },
         companyName: { type: String },
         shortDescription: { type: String },

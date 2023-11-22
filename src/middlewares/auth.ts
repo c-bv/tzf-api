@@ -1,6 +1,6 @@
 import { TAuthRequest } from '@custom-types/custom-types';
 import { TUser } from '@models';
-import { tokenService } from '@services';
+import { projectService, tokenService } from '@services';
 import { ApiError } from '@utils/ApiError';
 import { NextFunction, Response } from 'express';
 import httpStatus from 'http-status';
@@ -36,18 +36,38 @@ export const loadUser = async (req: TAuthRequest, res: Response, next: NextFunct
 
 export const restrictToSelf = (req: TAuthRequest, res: Response, next: NextFunction) => {
     if (!req.user || !req.user._id) return next(new ApiError(httpStatus.BAD_REQUEST, 'User id is required'));
-    if (ROLES_GROUPS.admin.includes(req.user.role as any)) next();
-    if (req.params._id !== req.user._id.toString()) {
+
+    if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
+
+    if (req.params._id !== req.user._id.toString())
         return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. This is not your resource.'));
-    }
+
+    next();
+};
+
+export const restrictToProjectOwner = async (req: TAuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user || !req.user._id) return next(new ApiError(httpStatus.BAD_REQUEST, 'User id is required'));
+
+    if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
+
+    const project = await projectService.getProjectById(req.params._id, ['userId']);
+    if (!project) return next(new ApiError(httpStatus.NOT_FOUND, 'Project not found.'));
+
+    const isOwner = project.userId === req.user._id.toString();
+    if (!isOwner) return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. This is not your resource.'));
+
     next();
 };
 
 export const restrictToRoles = (...roles: TUser['role'][]) => {
     return async (req: TAuthRequest, res: Response, next: NextFunction) => {
         if (!req.user || !req.user.role) return next(new ApiError(httpStatus.BAD_REQUEST, 'User role is required'));
+
+        if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
+
         if (!roles.includes(req.user.role))
             return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. Insufficient permissions.'));
+
         next();
     };
 };

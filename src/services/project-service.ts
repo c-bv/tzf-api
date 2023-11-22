@@ -5,8 +5,8 @@ import { ProjectModel, TProject, TProjectDocument } from '@models';
  * @param id - The ID of the project.
  * @returns A Promise that resolves to the project document or null if not found.
  */
-export const getProjectById = async (id: string): Promise<TProjectDocument | null> => {
-    return await ProjectModel.findById(id);
+export const getProjectById = async (id: string, select?: string[]): Promise<Partial<TProjectDocument> | null> => {
+    return await ProjectModel.findById(id).select(select || '');
 };
 
 /**

@@ -1,6 +1,5 @@
 import { projectController } from '@controllers';
-import { restrictToRoles, ROLES_GROUPS } from '@middlewares/auth';
-
+import { restrictToProjectOwner, restrictToRoles, ROLES_GROUPS } from '@middlewares/auth';
 import { asyncRouter } from '@utils/asyncRouter';
 import express from 'express';
 
@@ -34,7 +33,7 @@ router
      * @memberof module:projectRouter
      * @param {string} _id - The ID of the project to update.
      */
-    .patch(restrictToRoles(...ROLES_GROUPS.admin), projectController.updateProject);
+    .patch(restrictToRoles(...ROLES_GROUPS.seller), restrictToProjectOwner, projectController.updateProject);
 
 router
     .route('/:_id/activate')
