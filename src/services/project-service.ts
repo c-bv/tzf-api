@@ -1,4 +1,4 @@
-import { ProjectModel, TProjectDocument } from '@models';
+import { ProjectModel, TProject, TProjectDocument } from '@models';
 
 /**
  * Retrieves a project by its ID.
@@ -15,4 +15,14 @@ export const getProjectById = async (id: string): Promise<TProjectDocument | nul
  */
 export const getProjects = async (): Promise<TProjectDocument[] | null> => {
     return await ProjectModel.find();
+};
+
+/**
+ * Updates a project by their ID.
+ * @param id - The ID of the project to update.
+ * @param update - The partial update object containing the fields to update.
+ * @returns A promise that resolves to the updated project document, or null if not found.
+ */
+export const updateProject = async (id: string, update: Partial<TProject>): Promise<TProjectDocument | null> => {
+    return await ProjectModel.findByIdAndUpdate(id, update, { new: true });
 };
