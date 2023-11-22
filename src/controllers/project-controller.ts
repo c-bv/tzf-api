@@ -19,3 +19,17 @@ export const getProject = async (req: TAuthRequest, res: Response): Promise<void
 
     res.status(httpStatus.OK).send(project);
 };
+
+/**
+ * Retrieves the list of projects.
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns A promise that resolves to void.
+ * @throws {ApiError} If the projects are not found.
+ */
+export const getProjects = async (req: TAuthRequest, res: Response): Promise<void> => {
+    const projects = await projectService.getProjects();
+    if (!projects) throw new ApiError(httpStatus.NOT_FOUND, 'Projects not found');
+
+    res.status(httpStatus.OK).send(projects);
+};

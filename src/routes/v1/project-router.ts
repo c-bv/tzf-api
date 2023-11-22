@@ -5,6 +5,17 @@ import express from 'express';
 const router = express.Router();
 
 router
+    .route('/')
+    /**
+     * GET project by ID.
+     * @name GET /v1/projects/:_id
+     * @function
+     * @memberof module:projectRouter
+     * @param {string} _id - The ID of the project to retrieve.
+     */
+    .get(projectController.getProjects);
+
+router
     .route('/:_id')
     /**
      * GET project by ID.

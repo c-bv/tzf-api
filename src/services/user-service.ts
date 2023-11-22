@@ -50,7 +50,7 @@ export const getUsersByCompanyId = async (companyId: string): Promise<TUserDocum
 };
 
 /**
- * Retrieves all users from the database.
+ * Retrieves all users.
  * @returns A Promise that resolves to an array of TUserDocument or null if no users are found.
  */
 export const getUsers = async (): Promise<TUserDocument[] | null> => {
