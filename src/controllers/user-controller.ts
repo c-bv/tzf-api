@@ -115,7 +115,7 @@ export const toggleUserActive = async (req: TAuthRequest, res: Response): Promis
 };
 
 /**
- * Toggles the verification status of a user.
+ * Toggles the verified status of a user.
  * @param req - The request object containing the user id in the params.
  * @param res - The response object to send the updated user.
  * @returns A Promise that resolves to void.
