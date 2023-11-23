@@ -89,3 +89,26 @@ export const updateProject = async (req: TAuthRequest, res: Response): Promise<v
 
     res.status(httpStatus.OK).send(project);
 };
+
+/**
+ * Deletes a project.
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns A Promise that resolves to void.
+ * @throws {ApiError} If the project id is missing or if the project is not found.
+ */
+export const deleteProject = async (req: TAuthRequest, res: Response): Promise<void> => {
+    if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'Project id is required');
+
+    const project = await projectService.getProjectById(req.params._id);
+    if (!project) throw new ApiError(httpStatus.NOT_FOUND, 'Project not found');
+
+    // TODO: Check if the project is in any transaction and archive it if so, otherwise delete it.
+
+    // const projectsInTransactions = await Transaction.find({ projects: { $elemMatch: { _id: req.params.id } } });
+
+    // if (projectsInTransactions.length > 0) projectService.archiveProject(req.params._id);
+    // else projectService.deleteProject(req.params._id);
+
+    res.status(httpStatus.OK).send('TODO');
+};

@@ -26,3 +26,21 @@ export const getProjects = async (): Promise<TProjectDocument[] | null> => {
 export const updateProject = async (id: string, update: Partial<TProject>): Promise<TProjectDocument | null> => {
     return await ProjectModel.findByIdAndUpdate(id, update, { new: true });
 };
+
+/**
+ * Deletes a project by its ID.
+ * @param id - The ID of the project to delete.
+ * @returns A promise that resolves to the deleted project document, or null if the project was not found.
+ */
+export const deleteProject = async (id: string): Promise<TProjectDocument | null> => {
+    return await ProjectModel.findByIdAndDelete(id);
+};
+
+/**
+ * Archives a project by setting the isDeleted flag to true and updating the deleteDate.
+ * @param id - The ID of the project to be archived.
+ * @returns A Promise that resolves to the updated project document, or null if the project was not found.
+ */
+export const archiveProject = async (id: string): Promise<TProjectDocument | null> => {
+    return await ProjectModel.findByIdAndUpdate(id, { isDeleted: true, deleteDate: Date.now() }, { new: true });
+};

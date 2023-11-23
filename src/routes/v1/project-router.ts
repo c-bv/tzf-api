@@ -33,7 +33,16 @@ router
      * @memberof module:projectRouter
      * @param {string} _id - The ID of the project to update.
      */
-    .patch(restrictToRoles(...ROLES_GROUPS.seller), restrictToProjectOwner, projectController.updateProject);
+    .patch(restrictToRoles(...ROLES_GROUPS.seller), restrictToProjectOwner, projectController.updateProject)
+
+    /**
+     * DELETE project by ID.
+     * @name DELETE /v1/projects/:_id
+     * @function
+     * @memberof module:projectRouter
+     * @param {string} _id - The ID of the project to delete.
+     */
+    .delete(restrictToRoles(...ROLES_GROUPS.seller), restrictToProjectOwner, projectController.deleteProject);
 
 router
     .route('/:_id/activate')
