@@ -11,6 +11,7 @@ export type TUserDocument = TUser &
 export type TUserModel = Model<TUserDocument> & {
     isEmailTaken: (email: string) => Promise<boolean>;
 };
+export type TUserDocumentWithPassword = TUserDocument & { password: string };
 
 const userShema = new mongoose.Schema(
     {
@@ -34,7 +35,8 @@ const userShema = new mongoose.Schema(
             validate: {
                 validator: (password: string) => password.length >= 6,
                 message: 'Password must be at least 6 characters long'
-            }
+            },
+            select: false
         },
         role: {
             type: String,

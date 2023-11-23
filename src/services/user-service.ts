@@ -26,8 +26,8 @@ export const createUser = async (userData: RegisterUserData): Promise<Partial<TU
  * @param email - The email of the user to retrieve.
  * @returns A Promise that resolves with the retrieved user document, or null if no user was found.
  */
-export const getUserByEmail = async (email: string): Promise<TUserDocument | null> => {
-    return await UserModel.findOne({ email });
+export const getUserByEmail = async (email: string, password?: boolean): Promise<Partial<TUserDocument> | null> => {
+    return await UserModel.findOne({ email }).select(password ? '+password' : '');
 };
 
 /**
@@ -37,7 +37,7 @@ export const getUserByEmail = async (email: string): Promise<TUserDocument | nul
  * @returns A Promise that resolves to the retrieved user document, or null if no user was found.
  */
 export const getUserById = async (id: string, password?: boolean): Promise<Partial<TUserDocument> | null> => {
-    return await UserModel.findById(id).select(!password ? '-password' : '');
+    return await UserModel.findById(id).select(password ? '+password' : '');
 };
 
 /**
@@ -46,7 +46,7 @@ export const getUserById = async (id: string, password?: boolean): Promise<Parti
  * @returns A promise that resolves to an array of user documents or null.
  */
 export const getUsersByCompanyId = async (companyId: string): Promise<TUserDocument[] | null> => {
-    return await UserModel.find({ companyId }).select('-password');
+    return await UserModel.find({ companyId });
 };
 
 /**
