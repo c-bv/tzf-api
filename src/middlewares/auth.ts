@@ -1,6 +1,6 @@
 import { TAuthRequest } from '@custom-types/custom-types';
 import { TUser } from '@models';
-import { projectService, tokenService } from '@services';
+import { companyService, projectService, tokenService } from '@services';
 import { ApiError } from '@utils/ApiError';
 import { NextFunction, Response } from 'express';
 import httpStatus from 'http-status';
@@ -34,6 +34,19 @@ export const loadUser = async (req: TAuthRequest, res: Response, next: NextFunct
     next();
 };
 
+export const restrictToRoles = (...roles: TUser['role'][]) => {
+    return async (req: TAuthRequest, res: Response, next: NextFunction) => {
+        if (!req.user || !req.user.role) return next(new ApiError(httpStatus.BAD_REQUEST, 'User role is required'));
+
+        if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
+
+        if (!roles.includes(req.user.role))
+            return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. Insufficient permissions.'));
+
+        next();
+    };
+};
+
 export const restrictToSelf = (req: TAuthRequest, res: Response, next: NextFunction) => {
     if (!req.user || !req.user._id) return next(new ApiError(httpStatus.BAD_REQUEST, 'User id is required'));
 
@@ -59,15 +72,16 @@ export const restrictToProjectOwner = async (req: TAuthRequest, res: Response, n
     next();
 };
 
-export const restrictToRoles = (...roles: TUser['role'][]) => {
-    return async (req: TAuthRequest, res: Response, next: NextFunction) => {
-        if (!req.user || !req.user.role) return next(new ApiError(httpStatus.BAD_REQUEST, 'User role is required'));
+export const restrictToCompanyMember = async (req: TAuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user || !req.user._id) return next(new ApiError(httpStatus.BAD_REQUEST, 'User id is required'));
 
-        if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
+    if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
 
-        if (!roles.includes(req.user.role))
-            return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. Insufficient permissions.'));
+    const company = await companyService.getCompanyById(req.params._id, ['members']);
+    if (!company) return next(new ApiError(httpStatus.NOT_FOUND, 'Company not found.'));
 
-        next();
-    };
+    const isMember = company?.members?.includes(req.user._id);
+    if (!isMember) return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. This is not your resource.'));
+
+    next();
 };

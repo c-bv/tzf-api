@@ -14,8 +14,8 @@ export const getCompanies = async (): Promise<TCompanyDocument[] | null> => {
  * @param id - The ID of the company to retrieve.
  * @returns A Promise that resolves to the retrieved company document, or null if not found.
  */
-export const getCompanyById = async (id: string): Promise<TCompanyDocument | null> => {
-    return await CompanyModel.findById(id);
+export const getCompanyById = async (id: string, select?: string[]): Promise<Partial<TCompanyDocument> | null> => {
+    return await CompanyModel.findById(id).select(select || '');
 };
 
 /**

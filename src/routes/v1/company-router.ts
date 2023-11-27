@@ -1,5 +1,5 @@
 import { companyController } from '@controllers';
-import { ROLES_GROUPS, restrictToRoles } from '@middlewares/auth';
+import { ROLES_GROUPS, restrictToCompanyMember, restrictToRoles } from '@middlewares/auth';
 import { asyncRouter } from '@utils/asyncRouter';
 import express from 'express';
 
@@ -41,7 +41,7 @@ router
      * @memberof module:companyRouter
      * @param {string} _id - The ID of the company to update.
      */
-    .patch(restrictToRoles(...ROLES_GROUPS.all), companyController.updateCompany)
+    .patch(restrictToRoles(...ROLES_GROUPS.all), restrictToCompanyMember, companyController.updateCompany)
 
     /**
      * Route for deleting a company by its ID.
