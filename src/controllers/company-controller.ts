@@ -34,7 +34,6 @@ export const toggleWhiteLabel = async (req: TAuthRequest, res: Response) => {
 
     if (!company.whiteLabelId) {
         // TODO - add white label id to company
-        company.whiteLabelId = '123';
     }
 
     await companyService.updateCompany(req.params.id, {

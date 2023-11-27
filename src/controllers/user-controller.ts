@@ -108,8 +108,8 @@ export const toggleUserActive = async (req: TAuthRequest, res: Response): Promis
     const user = await userService.getUserById(req.params._id);
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
 
-    user.active = !user.active;
-    await userService.updateUser(req.params._id, { active: user.active });
+    user.isActive = !user.isActive;
+    await userService.updateUser(req.params._id, { isActive: user.isActive });
 
     res.status(httpStatus.OK).send(user);
 };
@@ -127,8 +127,8 @@ export const toggleUserVerified = async (req: TAuthRequest, res: Response): Prom
     const user = await userService.getUserById(req.params._id);
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
 
-    user.verified = !user.verified;
-    await userService.updateUser(req.params._id, { verified: user.verified });
+    user.isVerified = !user.isVerified;
+    await userService.updateUser(req.params._id, { isVerified: user.isVerified });
 
     res.status(httpStatus.OK).send(user);
 };
