@@ -40,20 +40,15 @@ const userShema = new mongoose.Schema(
         },
         role: {
             type: String,
+            required: [true, 'Role is required'],
             enum: {
                 values: ['admin', 'buyer', 'seller', 'consultingBuyer', 'consultingSeller'],
                 message: '{VALUE} is not supported'
-            },
-            required: [true, 'Role is required']
+            }
         },
-        companyId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Company',
-            default: null
-        },
-        consultedCompanies: [{ type: Schema.Types.ObjectId, ref: 'Company' }, { default: [] }],
-        verified: { type: Boolean, default: false },
-        active: { type: Boolean, default: false }
+        companyId: { type: Schema.Types.ObjectId, ref: 'Company' },
+        isVerified: { type: Boolean, default: false },
+        isActive: { type: Boolean, default: false }
     },
     {
         timestamps: true,
