@@ -6,6 +6,16 @@ import express from 'express';
 const router = express.Router();
 
 router
+    .route('/new')
+    /**
+     * Route for creating a new company.
+     * @name POST /v1/companies/new
+     * @function
+     * @memberof module:companyRouter
+     */
+    .post(restrictToRoles(...ROLES_GROUPS.all), companyController.createCompany);
+
+router
     .route('/:_id')
     /**
      * Route for getting a company by its ID.

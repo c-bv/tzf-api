@@ -18,3 +18,12 @@ export const getCompanyById = async (id: string): Promise<TCompanyDocument | nul
 export const updateCompany = async (id: string, update: Partial<TCompany>): Promise<TCompanyDocument | null> => {
     return await CompanyModel.findByIdAndUpdate(id, update, { new: true });
 };
+
+/**
+ * Creates a new company.
+ * @param company The company object to create.
+ * @returns A promise that resolves to the created company document.
+ */
+export const createCompany = async (company: TCompany): Promise<TCompanyDocument> => {
+    return await CompanyModel.create(company);
+};

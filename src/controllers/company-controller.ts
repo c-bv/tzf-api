@@ -1,5 +1,5 @@
 import { TAuthRequest } from '@custom-types/custom-types';
-import { companyService } from '@services';
+import { companyService, userService } from '@services';
 import { ApiError } from '@utils/ApiError';
 import { Response } from 'express';
 import httpStatus from 'http-status';
@@ -43,4 +43,22 @@ export const toggleWhiteLabel = async (req: TAuthRequest, res: Response) => {
     });
 
     res.status(httpStatus.OK).send(company);
+};
+
+/**
+ * Creates a new company.
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns The created company.
+ * @throws {ApiError} If the user id is missing or if the company is not created.
+ */
+export const createCompany = async (req: TAuthRequest, res: Response) => {
+    if (!req.user || !req.user._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
+
+    const company = await companyService.createCompany({ ...req.body, members: [req.user._id] });
+    if (!company) throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Company not created');
+
+    await userService.updateUser(req.user._id.toString(), { companyId: company._id });
+
+    res.status(httpStatus.CREATED).send(company);
 };
