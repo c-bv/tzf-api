@@ -5,6 +5,18 @@ import { Response } from 'express';
 import httpStatus from 'http-status';
 
 /**
+ * Get all companies.
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns A list of companies.
+ */
+export const getCompanies = async (req: TAuthRequest, res: Response) => {
+    const companies = await companyService.getCompanies();
+
+    res.status(httpStatus.OK).send(companies);
+};
+
+/**
  * Retrieves a company by its ID.
  * @param req - The request object.
  * @param res - The response object.

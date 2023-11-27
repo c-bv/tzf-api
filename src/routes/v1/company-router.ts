@@ -6,10 +6,18 @@ import express from 'express';
 const router = express.Router();
 
 router
-    .route('/new')
+    .route('/')
+    /**
+     * Route for getting all companies.
+     * @name GET /v1/companies
+     * @function
+     * @memberof module:companyRouter
+     */
+    .get(restrictToRoles(...ROLES_GROUPS.admin), companyController.getCompanies)
+
     /**
      * Route for creating a new company.
-     * @name POST /v1/companies/new
+     * @name POST /v1/companies
      * @function
      * @memberof module:companyRouter
      */

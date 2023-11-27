@@ -1,6 +1,15 @@
 import { CompanyModel, TCompany, TCompanyDocument } from '@models';
 
 /**
+ * Retrieves all companies.
+ * @returns A Promise that resolves to an array of TCompanyDocument or null if no companies are found.
+ * @throws {ApiError} If the company is not found.
+ */
+export const getCompanies = async (): Promise<TCompanyDocument[] | null> => {
+    return await CompanyModel.find();
+};
+
+/**
  * Retrieves a company by its ID.
  * @param id - The ID of the company to retrieve.
  * @returns A Promise that resolves to the retrieved company document, or null if not found.
