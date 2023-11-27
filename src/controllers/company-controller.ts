@@ -66,6 +66,11 @@ export const toggleWhiteLabel = async (req: TAuthRequest, res: Response) => {
 export const createCompany = async (req: TAuthRequest, res: Response) => {
     if (!req.user || !req.user._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
 
+    const user = await userService.getUserById(req.user._id.toString());
+    if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+
+    if (user.companyId) throw new ApiError(httpStatus.BAD_REQUEST, 'User already has a company');
+
     const company = await companyService.createCompany({ ...req.body, members: [req.user._id] });
     if (!company) throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Company not created');
 
