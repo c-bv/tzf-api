@@ -33,7 +33,16 @@ router
      * @memberof module:companyRouter
      * @param {string} _id - The ID of the company to update.
      */
-    .patch(restrictToRoles(...ROLES_GROUPS.all), companyController.updateCompany);
+    .patch(restrictToRoles(...ROLES_GROUPS.all), companyController.updateCompany)
+
+    /**
+     * Route for deleting a company by its ID.
+     * @name DELETE /v1/companies/:_id
+     * @function
+     * @memberof module:companyRouter
+     * @param {string} _id - The ID of the company to delete.
+     */
+    .delete(restrictToRoles(...ROLES_GROUPS.admin), companyController.deleteCompany);
 
 router
     .route('/:id/white-label')

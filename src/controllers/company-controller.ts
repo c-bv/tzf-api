@@ -77,3 +77,19 @@ export const updateCompany = async (req: TAuthRequest, res: Response) => {
 
     res.status(httpStatus.OK).send(company);
 };
+
+/**
+ * Deletes a company.
+ * @param {TAuthRequest} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves when the company is deleted.
+ * @throws {ApiError} - If the company id is missing or if the company is not found.
+ */
+export const deleteCompany = async (req: TAuthRequest, res: Response) => {
+    if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'Company id is required');
+
+    const company = await companyService.deleteCompany(req.params._id);
+    if (!company) throw new ApiError(httpStatus.NOT_FOUND, 'Company not found');
+
+    res.status(httpStatus.OK).send(company);
+};

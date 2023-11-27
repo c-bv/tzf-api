@@ -27,3 +27,12 @@ export const updateCompany = async (id: string, update: Partial<TCompany>): Prom
 export const createCompany = async (company: TCompany): Promise<TCompanyDocument> => {
     return await CompanyModel.create(company);
 };
+
+/**
+ * Deletes a company by its ID.
+ * @param id - The ID of the company to delete.
+ * @returns A promise that resolves to the deleted company document.
+ */
+export const deleteCompany = async (id: string): Promise<TCompanyDocument | null> => {
+    return await CompanyModel.findByIdAndDelete(id);
+};
