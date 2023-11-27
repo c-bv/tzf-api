@@ -61,3 +61,19 @@ export const createCompany = async (req: TAuthRequest, res: Response) => {
 
     res.status(httpStatus.CREATED).send(company);
 };
+
+/**
+ * Updates a company.
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns The updated company.
+ * @throws {ApiError} If the company id is missing or if the company is not found.
+ */
+export const updateCompany = async (req: TAuthRequest, res: Response) => {
+    if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'Company id is required');
+
+    const company = await companyService.updateCompany(req.params._id, req.body);
+    if (!company) throw new ApiError(httpStatus.NOT_FOUND, 'Company not found');
+
+    res.status(httpStatus.OK).send(company);
+};

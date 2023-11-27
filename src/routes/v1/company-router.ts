@@ -24,7 +24,16 @@ router
      * @memberof module:companyRouter
      * @param {string} _id - The ID of the company to retrieve.
      */
-    .get(restrictToRoles(...ROLES_GROUPS.all), companyController.getCompany);
+    .get(restrictToRoles(...ROLES_GROUPS.all), companyController.getCompany)
+
+    /**
+     * Route for updating a company by its ID.
+     * @name PATCH /v1/companies/:_id
+     * @function
+     * @memberof module:companyRouter
+     * @param {string} _id - The ID of the company to update.
+     */
+    .patch(restrictToRoles(...ROLES_GROUPS.all), companyController.updateCompany);
 
 router
     .route('/:id/white-label')
