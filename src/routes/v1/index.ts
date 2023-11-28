@@ -1,4 +1,4 @@
-import { loadUser } from '@middlewares/auth';
+import { bodySanitizer, loadUser } from '@middlewares/auth';
 import express from 'express';
 import { authRouter } from './auth-router';
 import { companyRouter } from './company-router';
@@ -39,7 +39,7 @@ const publicRoutes = [
     }
 ];
 
-authRoutes.forEach(route => router.use(route.path, loadUser, route.route));
+authRoutes.forEach(route => router.use(route.path, loadUser, bodySanitizer, route.route));
 
 publicRoutes.forEach(route => router.use(route.path, route.route));
 
