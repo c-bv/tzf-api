@@ -51,10 +51,15 @@ const userShema = new mongoose.Schema(
         isActive: { type: Boolean, default: false }
     },
     {
+        toJSON: { virtuals: true },
         timestamps: true,
         versionKey: false
     }
 );
+
+userShema.virtual('fullName').get(function () {
+    return `${this.firstName} ${this.lastName}`;
+});
 
 userShema.methods.setPassword = async function (password: string): Promise<void> {
     const salt: string = await bcrypt.genSalt(10);
@@ -74,11 +79,6 @@ userShema.statics.isEmailTaken = async function (email: string): Promise<boolean
     return !!user;
 };
 
-userShema.pre('save', async function (this: TUserDocument): Promise<void> {
-    if (!this.isModified('password')) return;
-    await this.setPassword(this.password);
-});
-
 userShema.pre('findOneAndUpdate', async function (this: any): Promise<void> {
     const queryConditions = this.getQuery();
     const documentBeingUpdated = await this.model.findOne(queryConditions);
@@ -89,6 +89,11 @@ userShema.pre('findOneAndUpdate', async function (this: any): Promise<void> {
         const isEmailTaken = await this.model.isEmailTaken(this._update.email);
         if (isEmailTaken) throw new Error('Email is already taken');
     }
+});
+
+userShema.pre('save', async function (this: TUserDocument): Promise<void> {
+    if (!this.isModified('password')) return;
+    await this.setPassword(this.password);
 });
 
 export const UserModel = mongoose.model<TUserDocument, TUserModel>('User', userShema);
