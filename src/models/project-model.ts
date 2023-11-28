@@ -70,10 +70,13 @@ const projectShema = new mongoose.Schema(
                 images: [projectImageSchema]
             }
         ],
-        startedDate: { type: Date },
-        endedDate: { type: Date },
-        acceptationDate: { type: Date },
-        deleteDate: { type: Date },
+        dates: {
+            started: { type: Date },
+            ended: { type: Date },
+            acceptation: { type: Date },
+            delete: { type: Date }
+        },
+
         nextBillNumber: { type: Number },
         certificateNumber: { type: String },
         nextCertificateSerial: { type: Number },
