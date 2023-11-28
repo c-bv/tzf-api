@@ -6,7 +6,11 @@ export const locationSchema = new mongoose.Schema(
         country: { type: String },
         city: { type: String },
         postalCode: { type: String },
-        region: { type: String }
+        region: { type: String },
+        coordinates: {
+            latitude: { type: Number },
+            longitude: { type: Number }
+        }
     },
     { _id: false }
 );
