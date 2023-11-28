@@ -59,9 +59,9 @@ export const toggleProjectActive = async (req: TAuthRequest, res: Response): Pro
     const project = await projectService.getProjectById(req.params._id);
     if (!project) throw new ApiError(httpStatus.NOT_FOUND, 'Project not found');
 
-    project.active = !project.active;
+    project.isActive = !project.isActive;
 
-    await projectService.updateProject(req.params._id, { active: project.active });
+    await projectService.updateProject(req.params._id, { isActive: project.isActive });
 
     res.status(httpStatus.OK).send(project);
 };
@@ -79,9 +79,9 @@ export const toggleProjectPublished = async (req: TAuthRequest, res: Response): 
     const project = await projectService.getProjectById(req.params._id);
     if (!project) throw new ApiError(httpStatus.NOT_FOUND, 'Project not found');
 
-    project.published = !project.published;
+    project.isPublished = !project.isPublished;
 
-    await projectService.updateProject(req.params._id, { published: project.published });
+    await projectService.updateProject(req.params._id, { isPublished: project.isPublished });
 
     res.status(httpStatus.OK).send(project);
 };

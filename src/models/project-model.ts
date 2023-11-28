@@ -1,32 +1,39 @@
+import { fileSchema, locationSchema } from '@schemas';
 import mongoose, { Document, InferSchemaType, Model, Schema } from 'mongoose';
 
 export type TProject = InferSchemaType<typeof projectShema>;
 export type TProjectDocument = TProject & Document;
 export type TProjectModel = Model<TProjectDocument>;
 
+const projectImageSchema = new mongoose.Schema(
+    {
+        ...fileSchema.obj,
+        orderIndex: { type: Number }
+    },
+    { _id: false }
+);
+
 const projectShema = new mongoose.Schema(
     {
         _id: { type: Schema.Types.ObjectId, auto: true },
         name: { type: String },
-        userId: { type: String, required: true },
-        companyId: { type: String },
-        companyName: { type: String },
-        shortDescription: { type: String },
-        description: { type: String },
-        type: { type: String },
+        userId: { type: Schema.Types.ObjectId, ref: 'User' },
+        company: {
+            _id: { type: Schema.Types.ObjectId, ref: 'Company' },
+            name: { type: String }
+        },
+
+        description: {
+            short: { type: String },
+            long: { type: String }
+        },
         story: { type: String },
         solution: { type: String },
         impact: { type: String },
+
+        type: { type: String },
         url: { type: String },
-        images: [
-            {
-                _id: false,
-                orderIndex: { type: Number },
-                path: { type: String },
-                miniPath: { type: String },
-                fileName: { type: String }
-            }
-        ],
+        images: [projectImageSchema],
         sdgs: { type: [Number] },
         label: {
             _id: false,
@@ -39,12 +46,16 @@ const projectShema = new mongoose.Schema(
                 name: { type: String }
             }
         ],
+
         commissionRate: { type: Number },
-        carbonVolumeTotal: { type: Number },
-        carbonVolumeTotalForSale: { type: Number },
-        carbonVolumeOffsetted: { type: Number },
-        unitPriceCarbon: { type: Number },
-        totalAmountCollected: { type: Number },
+        carbon: {
+            volume: { type: Number },
+            forSaleVolume: { type: Number },
+            offsettedVolume: { type: Number },
+            unitPrice: { type: Number }
+        },
+        amountCollected: { type: Number },
+
         members: [
             {
                 companyName: { type: String },
@@ -53,42 +64,27 @@ const projectShema = new mongoose.Schema(
                     lastName: { type: String }
                 },
                 url: { type: String }, // Will be deleted in the future
-                address: { type: String },
-                city: { type: String },
-                postalCode: { type: String },
-                region: { type: String },
-                country: { type: String },
-                gpsCoordinates: {
-                    latitude: { type: Number },
-                    longitude: { type: Number }
-                },
+                location: locationSchema,
                 urls: { type: [String] },
                 description: { type: String },
-                images: [
-                    {
-                        _id: false,
-                        orderIndex: { type: Number },
-                        path: { type: String },
-                        miniPath: { type: String },
-                        fileName: { type: String }
-                    }
-                ]
+                images: [projectImageSchema]
             }
         ],
         startedDate: { type: Date },
         endedDate: { type: Date },
         acceptationDate: { type: Date },
-        published: { type: Boolean, default: false },
-        active: { type: Boolean, default: false },
-        isDeleted: { type: Boolean, default: false },
         deleteDate: { type: Date },
         nextBillNumber: { type: Number },
         certificateNumber: { type: String },
         nextCertificateSerial: { type: Number },
         invoicePrefix: { type: String },
-        canTakeTransactions: { type: Boolean, default: false },
         minimumAmountToBuy: { type: Number, default: 0 },
-        withoutCarbonCredit: { type: Boolean, default: false }
+
+        canTakeTransactions: { type: Boolean, default: false },
+        isPublished: { type: Boolean, default: false },
+        isActive: { type: Boolean, default: false },
+        isDeleted: { type: Boolean, default: false },
+        isWithoutCarbonCredit: { type: Boolean, default: false }
     },
     {
         timestamps: true,
