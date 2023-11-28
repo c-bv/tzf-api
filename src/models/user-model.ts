@@ -76,7 +76,19 @@ userShema.statics.isEmailTaken = async function (email: string): Promise<boolean
 
 userShema.pre('save', async function (this: TUserDocument): Promise<void> {
     if (!this.isModified('password')) return;
-    await this.setPassword(this.password as string);
+    await this.setPassword(this.password);
+});
+
+userShema.pre('findOneAndUpdate', async function (this: any): Promise<void> {
+    const queryConditions = this.getQuery();
+    const documentBeingUpdated = await this.model.findOne(queryConditions);
+
+    if (this._update.password) await documentBeingUpdated.setPassword(this._update.password);
+
+    if (this._update.email && this._update.email !== documentBeingUpdated.email) {
+        const isEmailTaken = await this.model.isEmailTaken(this._update.email);
+        if (isEmailTaken) throw new Error('Email is already taken');
+    }
 });
 
 export const UserModel = mongoose.model<TUserDocument, TUserModel>('User', userShema);
