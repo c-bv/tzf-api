@@ -1,5 +1,5 @@
 import { TAuthRequest } from '@custom-types/custom-types';
-import { projectService } from '@services';
+import { companyService, projectService } from '@services';
 import { ApiError } from '@utils/ApiError';
 import { Response } from 'express';
 import httpStatus from 'http-status';
@@ -41,6 +41,17 @@ export const getProjects = async (req: TAuthRequest, res: Response): Promise<voi
  * @returns A promise that resolves to void.
  */
 export const createProject = async (req: TAuthRequest, res: Response): Promise<void> => {
+    if (!req.user || !req.user._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
+
+    const userCompany = await companyService.getCompanyByUserId(req.user._id.toString());
+    if (!userCompany) throw new ApiError(httpStatus.NOT_FOUND, 'Company not found');
+
+    req.body.userId = req.user._id;
+    req.body.company = {
+        _id: userCompany._id,
+        name: userCompany.name
+    };
+
     const project = await projectService.createProject(req.body);
 
     res.status(httpStatus.CREATED).send(project);

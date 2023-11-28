@@ -51,15 +51,10 @@ const userShema = new mongoose.Schema(
         isActive: { type: Boolean, default: false }
     },
     {
-        toJSON: { virtuals: true },
         timestamps: true,
         versionKey: false
     }
 );
-
-userShema.virtual('fullName').get(function () {
-    return `${this.firstName} ${this.lastName}`;
-});
 
 userShema.methods.setPassword = async function (password: string): Promise<void> {
     const salt: string = await bcrypt.genSalt(10);

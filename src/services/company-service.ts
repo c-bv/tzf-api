@@ -19,6 +19,19 @@ export const getCompanyById = async (id: string, select?: string[]): Promise<Par
 };
 
 /**
+ * Retrieves a company document by user ID.
+ * @param userId - The ID of the user.
+ * @param select - Optional array of fields to select from the company document.
+ * @returns A promise that resolves to a partial company document or null.
+ */
+export const getCompanyByUserId = async (
+    userId: string,
+    select?: string[]
+): Promise<Partial<TCompanyDocument> | null> => {
+    return await CompanyModel.findOne({ members: userId }).select(select || '');
+};
+
+/**
  * Updates a company by its ID.
  * @param id - The ID of the company to update.
  * @param update - The partial update object containing the fields to update.
