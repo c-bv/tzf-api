@@ -66,7 +66,7 @@ export const restrictToProjectOwner = async (req: TAuthRequest, res: Response, n
     const project = await projectService.getProjectById(req.params._id, ['userId']);
     if (!project) return next(new ApiError(httpStatus.NOT_FOUND, 'Project not found.'));
 
-    const isOwner = project.userId === req.user._id.toString();
+    const isOwner = project.userId === req.user._id;
     if (!isOwner) return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. This is not your resource.'));
 
     next();
@@ -82,6 +82,26 @@ export const restrictToCompanyMember = async (req: TAuthRequest, res: Response, 
 
     const isMember = company?.members?.includes(req.user._id);
     if (!isMember) return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. This is not your resource.'));
+
+    next();
+};
+
+export const bodySanitizer = (req: TAuthRequest, res: Response, next: NextFunction) => {
+    if (!req.user || !req.user.role) return next(new ApiError(httpStatus.BAD_REQUEST, 'User role is required'));
+
+    if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
+
+    // common
+    delete req.body._id;
+    delete req.body.__v;
+    delete req.body.createdAt;
+    delete req.body.updatedAt;
+
+    // user
+    delete req.body.role;
+    delete req.body.companyId;
+    delete req.body.isVerified;
+    delete req.body.isActive;
 
     next();
 };
