@@ -18,6 +18,15 @@ export const getProjects = async (): Promise<TProjectDocument[] | null> => {
 };
 
 /**
+ * Creates a new project.
+ * @param project - The project object.
+ * @returns A promise that resolves to the created project document.
+ */
+export const createProject = async (project: TProject): Promise<TProjectDocument> => {
+    return await ProjectModel.create(project);
+};
+
+/**
  * Updates a project by their ID.
  * @param id - The ID of the project to update.
  * @param update - The partial update object containing the fields to update.

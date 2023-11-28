@@ -13,7 +13,15 @@ router
      * @function
      * @memberof module:projectRouter
      */
-    .get(restrictToRoles(...ROLES_GROUPS.all), projectController.getProjects);
+    .get(restrictToRoles(...ROLES_GROUPS.all), projectController.getProjects)
+
+    /**
+     * POST a new project.
+     * @name POST /v1/projects
+     * @function
+     * @memberof module:projectRouter
+     */
+    .post(restrictToRoles(...ROLES_GROUPS.seller), projectController.createProject);
 
 router
     .route('/:_id')

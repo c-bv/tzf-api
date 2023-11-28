@@ -35,6 +35,18 @@ export const getProjects = async (req: TAuthRequest, res: Response): Promise<voi
 };
 
 /**
+ * Creates a new project.
+ * @param req - The request object containing the project data.
+ * @param res - The response object.
+ * @returns A promise that resolves to void.
+ */
+export const createProject = async (req: TAuthRequest, res: Response): Promise<void> => {
+    const project = await projectService.createProject(req.body);
+
+    res.status(httpStatus.CREATED).send(project);
+};
+
+/**
  * Toggles the active status of a project.
  * @param req - The request object containing the project id.
  * @param res - The response object.
