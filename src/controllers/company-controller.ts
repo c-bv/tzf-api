@@ -10,7 +10,7 @@ import httpStatus from 'http-status';
  * @param res - The response object.
  * @returns A list of companies.
  */
-export const getCompanies = async (req: TAuthRequest, res: Response) => {
+export const getCompanies = async (req: TAuthRequest, res: Response): Promise<void> => {
     const companies = await companyService.getCompanies();
 
     res.status(httpStatus.OK).send(companies);
@@ -22,7 +22,7 @@ export const getCompanies = async (req: TAuthRequest, res: Response) => {
  * @param res - The response object.
  * @throws {ApiError} If the company ID is missing or if the company is not found.
  */
-export const getCompany = async (req: TAuthRequest, res: Response) => {
+export const getCompany = async (req: TAuthRequest, res: Response): Promise<void> => {
     if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'Company id is required');
 
     const company = await companyService.getCompanyById(req.params._id);
@@ -38,7 +38,7 @@ export const getCompany = async (req: TAuthRequest, res: Response) => {
  * @returns A Promise that resolves to the updated company object.
  * @throws {ApiError} If the company id is missing or if the company is not found.
  */
-export const toggleWhiteLabel = async (req: TAuthRequest, res: Response) => {
+export const toggleWhiteLabel = async (req: TAuthRequest, res: Response): Promise<void> => {
     if (!req.params.id) throw new ApiError(httpStatus.BAD_REQUEST, 'Company id is required');
 
     const company = await companyService.getCompanyById(req.params.id);
@@ -63,7 +63,7 @@ export const toggleWhiteLabel = async (req: TAuthRequest, res: Response) => {
  * @returns The created company.
  * @throws {ApiError} If the user id is missing or if the company is not created.
  */
-export const createCompany = async (req: TAuthRequest, res: Response) => {
+export const createCompany = async (req: TAuthRequest, res: Response): Promise<void> => {
     if (!req.user || !req.user._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
 
     const user = await userService.getUserById(req.user._id.toString());
@@ -71,7 +71,7 @@ export const createCompany = async (req: TAuthRequest, res: Response) => {
 
     if (user.company) throw new ApiError(httpStatus.BAD_REQUEST, 'User already has a company');
 
-    const company = await companyService.createCompany({ ...req.body, members: [req.user._id] });
+    const company = await companyService.createCompany({ ...req.body, users: [req.user._id] });
     if (!company) throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Company not created');
 
     await userService.updateUser(req.user._id.toString(), { company: company._id });
@@ -86,7 +86,7 @@ export const createCompany = async (req: TAuthRequest, res: Response) => {
  * @returns The updated company.
  * @throws {ApiError} If the company id is missing or if the company is not found.
  */
-export const updateCompany = async (req: TAuthRequest, res: Response) => {
+export const updateCompany = async (req: TAuthRequest, res: Response): Promise<void> => {
     if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'Company id is required');
 
     const company = await companyService.updateCompany(req.params._id, req.body);
@@ -102,7 +102,7 @@ export const updateCompany = async (req: TAuthRequest, res: Response) => {
  * @returns {Promise<void>} - A promise that resolves when the company is deleted.
  * @throws {ApiError} - If the company id is missing or if the company is not found.
  */
-export const deleteCompany = async (req: TAuthRequest, res: Response) => {
+export const deleteCompany = async (req: TAuthRequest, res: Response): Promise<void> => {
     if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'Company id is required');
 
     const company = await companyService.deleteCompany(req.params._id);

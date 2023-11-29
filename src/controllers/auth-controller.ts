@@ -8,7 +8,7 @@ import httpStatus from 'http-status';
  * @param res - The response object to send the user and token.
  * @returns A Promise that resolves to the created user and token.
  */
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response): Promise<void> => {
     const user = await userService.createUser(req.body);
     const token = tokenService.generateAuthToken(user);
 
@@ -21,7 +21,7 @@ export const register = async (req: Request, res: Response) => {
  * @param res - The response object.
  * @returns The logged in user and an authentication token.
  */
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<void> => {
     const user = await authService.loginUserWithEmailAndPassword(req.body.email, req.body.password);
     const token = tokenService.generateAuthToken(user);
 

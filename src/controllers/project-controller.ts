@@ -14,7 +14,7 @@ import httpStatus from 'http-status';
 export const getProject = async (req: TAuthRequest, res: Response): Promise<void> => {
     if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'Project id is required');
 
-    const project = await projectService.getProjectById(req.params._id, { populate: 'userId companyId' });
+    const project = await projectService.getProjectById(req.params._id, { populate: 'user company' });
     if (!project) throw new ApiError(httpStatus.NOT_FOUND, 'Project not found');
 
     res.status(httpStatus.OK).send(project);
@@ -39,6 +39,7 @@ export const getProjects = async (req: TAuthRequest, res: Response): Promise<voi
  * @param req - The request object containing the project data.
  * @param res - The response object.
  * @returns A promise that resolves to void.
+ * @throws {ApiError} If the user id is missing or if the company is not found.
  */
 export const createProject = async (req: TAuthRequest, res: Response): Promise<void> => {
     if (!req.user || !req.user._id) throw new ApiError(httpStatus.BAD_REQUEST, 'User id is required');
