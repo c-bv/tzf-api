@@ -2,33 +2,43 @@ import { CompanyModel, TCompany, TCompanyDocument } from '@models';
 
 /**
  * Retrieves all companies.
- * @returns A Promise that resolves to an array of TCompanyDocument or null if no companies are found.
- * @throws {ApiError} If the company is not found.
+ * @param options - Additional options for selecting and populating fields.
+ * @returns A promise that resolves to an array of company documents.
  */
-export const getCompanies = async (): Promise<TCompanyDocument[] | null> => {
-    return await CompanyModel.find();
+export const getCompanies = async (options?: { select?: string; populate?: string }): Promise<TCompanyDocument[]> => {
+    return await CompanyModel.find()
+        .select(options?.select || '')
+        .populate(options?.populate || '');
 };
 
 /**
  * Retrieves a company by its ID.
- * @param id - The ID of the company to retrieve.
- * @returns A Promise that resolves to the retrieved company document, or null if not found.
+ * @param id - The ID of the company.
+ * @param options - Additional options for selecting and populating fields.
+ * @returns A promise that resolves to a partial company document or null if not found.
  */
-export const getCompanyById = async (id: string, select?: string[]): Promise<Partial<TCompanyDocument> | null> => {
-    return await CompanyModel.findById(id).select(select || '');
+export const getCompanyById = async (
+    id: string,
+    options?: { select?: string; populate?: string }
+): Promise<Partial<TCompanyDocument> | null> => {
+    return await CompanyModel.findById(id)
+        .select(options?.select || '')
+        .populate(options?.populate || '');
 };
 
 /**
- * Retrieves a company document by user ID.
+ * Retrieves a company by its user ID.
  * @param userId - The ID of the user.
- * @param select - Optional array of fields to select from the company document.
- * @returns A promise that resolves to a partial company document or null.
+ * @param options - Additional options for selecting and populating fields.
+ * @returns A promise that resolves to a partial company document or null if not found.
  */
 export const getCompanyByUserId = async (
     userId: string,
-    select?: string[]
+    options?: { select?: string; populate?: string }
 ): Promise<Partial<TCompanyDocument> | null> => {
-    return await CompanyModel.findOne({ members: userId }).select(select || '');
+    return await CompanyModel.findOne({ members: userId })
+        .select(options?.select || '')
+        .populate(options?.populate || '');
 };
 
 /**

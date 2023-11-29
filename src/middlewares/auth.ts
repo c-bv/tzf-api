@@ -77,7 +77,7 @@ export const restrictToCompanyMember = async (req: TAuthRequest, res: Response, 
 
     if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
 
-    const company = await companyService.getCompanyById(req.params._id, ['members']);
+    const company = await companyService.getCompanyById(req.params._id, { select: 'members' });
     if (!company) return next(new ApiError(httpStatus.NOT_FOUND, 'Company not found.'));
 
     const isMember = company?.members?.includes(req.user._id);
