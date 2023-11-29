@@ -1,9 +1,10 @@
-import { projectShema } from '@models';
+import { TProject, projectShema } from '@models';
 import mongoose, { Document, InferSchemaType, Model, Schema } from 'mongoose';
 
 export type TTransaction = InferSchemaType<typeof transactionShema>;
 export type TTransactionDocument = TTransaction & Document;
 export type TTransactionModel = Model<TTransactionDocument>;
+export type TProjectTransaction = InferSchemaType<typeof projectTransactionSchema> & TProject;
 
 const projectTransactionSchema = new mongoose.Schema(
     {
@@ -41,7 +42,7 @@ const transactionShema = new mongoose.Schema(
         transactionHash: { type: String },
 
         dates: {
-            creation: { type: Date },
+            creation: { type: Date, default: Date.now },
             validation: { type: Date }
         },
 

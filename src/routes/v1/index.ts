@@ -5,6 +5,7 @@ import { companyRouter } from './company-router';
 import { docRouter } from './doc-router';
 import { projectRouter } from './project-router';
 import { publicRouter } from './public-router';
+import { transactionRouter } from './transaction-router';
 import { userRouter } from './user-router';
 
 const router = express.Router();
@@ -21,6 +22,10 @@ const authRoutes = [
     {
         path: '/projects',
         route: projectRouter
+    },
+    {
+        path: '/transactions',
+        route: transactionRouter
     }
 ];
 
