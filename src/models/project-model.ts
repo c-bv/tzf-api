@@ -13,7 +13,7 @@ const projectImageSchema = new mongoose.Schema(
     { _id: false }
 );
 
-const projectShema = new mongoose.Schema(
+export const projectShema = new mongoose.Schema(
     {
         _id: { type: Schema.Types.ObjectId, auto: true },
         company: { type: Schema.Types.ObjectId, ref: 'Company', required: [true, 'Company is required'] },
