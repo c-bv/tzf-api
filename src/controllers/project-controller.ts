@@ -14,7 +14,7 @@ import httpStatus from 'http-status';
 export const getProject = async (req: TAuthRequest, res: Response): Promise<void> => {
     if (!req.params._id) throw new ApiError(httpStatus.BAD_REQUEST, 'Project id is required');
 
-    const project = await projectService.getProjectById(req.params._id, { populate: 'user company' });
+    const project = await projectService.getProjectById(req.params._id, { populate: 'company' });
     if (!project) throw new ApiError(httpStatus.NOT_FOUND, 'Project not found');
 
     res.status(httpStatus.OK).send(project);
@@ -47,8 +47,7 @@ export const createProject = async (req: TAuthRequest, res: Response): Promise<v
     const userCompany = await companyService.getCompanyByUserId(req.user._id.toString());
     if (!userCompany) throw new ApiError(httpStatus.NOT_FOUND, 'Company not found');
 
-    req.body.userId = req.user._id;
-    req.body.companyId = userCompany._id;
+    req.body.company = userCompany._id;
 
     const project = await projectService.createProject(req.body);
 

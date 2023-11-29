@@ -36,7 +36,7 @@ export const getCompanyByUserId = async (
     userId: string,
     options?: { select?: string; populate?: string }
 ): Promise<Partial<TCompanyDocument> | null> => {
-    return await CompanyModel.findOne({ members: userId })
+    return await CompanyModel.findOne({ users: userId })
         .select(options?.select || '')
         .populate(options?.populate || '');
 };

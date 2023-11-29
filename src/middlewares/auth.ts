@@ -63,10 +63,13 @@ export const restrictToProjectOwner = async (req: TAuthRequest, res: Response, n
 
     if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
 
-    const project = await projectService.getProjectById(req.params._id, { select: '+userId' });
+    const project = await projectService.getProjectById(req.params._id, { select: '+company' });
     if (!project) return next(new ApiError(httpStatus.NOT_FOUND, 'Project not found.'));
 
-    const isOwner = project.user === req.user._id;
+    const company = await companyService.getCompanyByUserId(req.user._id.toString());
+    if (!company) return next(new ApiError(httpStatus.NOT_FOUND, 'Company not found.'));
+
+    const isOwner = project.company.toString() === company._id.toString();
     if (!isOwner) return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. This is not your resource.'));
 
     next();

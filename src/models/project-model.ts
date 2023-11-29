@@ -16,7 +16,6 @@ const projectImageSchema = new mongoose.Schema(
 const projectShema = new mongoose.Schema(
     {
         _id: { type: Schema.Types.ObjectId, auto: true },
-        user: { type: Schema.Types.ObjectId, ref: 'User', required: [true, 'User is required'] },
         company: { type: Schema.Types.ObjectId, ref: 'Company', required: [true, 'Company is required'] },
 
         name: { type: String },
