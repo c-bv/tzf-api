@@ -14,7 +14,7 @@ export const loginUserWithEmailAndPassword = async (
     email: string,
     password: string
 ): Promise<Partial<TUserDocument>> => {
-    const user = (await userService.getUserByEmail(email, true)) as TUserDocumentWithPassword;
+    const user = (await userService.getUserByEmail(email, { select: '+password' })) as TUserDocumentWithPassword;
 
     if (!user || !(await user.checkPassword(password)))
         throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');

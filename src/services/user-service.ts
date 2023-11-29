@@ -24,37 +24,54 @@ export const createUser = async (userData: RegisterUserData): Promise<Partial<TU
 /**
  * Retrieves a user document from the database by email.
  * @param email - The email of the user to retrieve.
- * @returns A Promise that resolves with the retrieved user document, or null if no user was found.
+ * @param options - Additional options for selecting and populating fields.
+ * @returns A Promise that resolves to the retrieved user document, or null if no user was found.
  */
-export const getUserByEmail = async (email: string, password?: boolean): Promise<Partial<TUserDocument> | null> => {
-    return await UserModel.findOne({ email }).select(password ? '+password' : '');
+export const getUserByEmail = async (
+    email: string,
+    options?: { select?: string; populate?: string }
+): Promise<Partial<TUserDocument> | null> => {
+    return await UserModel.findOne({ email })
+        .select(options?.select || '')
+        .populate(options?.populate || '');
 };
 
 /**
- * Retrieves a user by their ID.
+ * Retrieves a user document from the database by ID.
  * @param id - The ID of the user to retrieve.
- * @param password - Whether or not to include the user's password in the retrieved document.
+ * @param options - Additional options for selecting and populating fields.
  * @returns A Promise that resolves to the retrieved user document, or null if no user was found.
  */
-export const getUserById = async (id: string, password?: boolean): Promise<Partial<TUserDocument> | null> => {
-    return await UserModel.findById(id).select(password ? '+password' : '');
+export const getUserById = async (
+    id: string,
+    options?: { select?: string; populate?: string }
+): Promise<Partial<TUserDocument> | null> => {
+    return await UserModel.findById(id)
+        .select(options?.select || '')
+        .populate(options?.populate || '');
 };
 
 /**
  * Retrieves users by company ID.
- * @param companyId - The ID of the company.
- * @returns A promise that resolves to an array of user documents or null.
+ * @param companyId - The ID of the company to retrieve users for.
+ * @param options - Additional options for selecting and populating fields.
+ * @returns A Promise that resolves to an array of TUserDocument or null if no users are found.
  */
-export const getUsersByCompanyId = async (companyId: string): Promise<TUserDocument[] | null> => {
-    return await UserModel.find({ companyId });
+export const getUsersByCompanyId = async (companyId: string, options?: { select?: string; populate?: string }) => {
+    return await UserModel.find({ companyId })
+        .select(options?.select || '')
+        .populate(options?.populate || '');
 };
 
 /**
  * Retrieves all users.
+ * @param options - Additional options for selecting and populating fields.
  * @returns A Promise that resolves to an array of TUserDocument or null if no users are found.
  */
-export const getUsers = async (): Promise<TUserDocument[] | null> => {
-    return await UserModel.find();
+export const getUsers = async (options?: { select?: string; populate?: string }): Promise<TUserDocument[]> => {
+    return await UserModel.find()
+        .select(options?.select || '')
+        .populate(options?.populate || '');
 };
 
 /**
