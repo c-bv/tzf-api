@@ -75,8 +75,8 @@ userShema.statics.isEmailTaken = async function (email: string): Promise<boolean
 };
 
 userShema.pre('findOneAndUpdate', async function (this: any): Promise<void> {
-    const queryConditions = this.getQuery();
-    const documentBeingUpdated = await this.model.findOne(queryConditions);
+    const user = this.getQuery() as TUser;
+    const documentBeingUpdated = await this.model.findOne(user);
 
     if (this._update.password) await documentBeingUpdated.setPassword(this._update.password);
 
@@ -84,6 +84,11 @@ userShema.pre('findOneAndUpdate', async function (this: any): Promise<void> {
         const isEmailTaken = await this.model.isEmailTaken(this._update.email);
         if (isEmailTaken) throw new Error('Email is already taken');
     }
+});
+
+userShema.pre('findOneAndDelete', async function (): Promise<void> {
+    const user = this.getQuery() as TUser;
+    await mongoose.model('Company').updateMany({ users: user._id }, { $pull: { users: user._id } });
 });
 
 userShema.pre('save', async function (this: TUserDocument): Promise<void> {

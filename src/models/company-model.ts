@@ -52,4 +52,9 @@ const companyShema = new mongoose.Schema(
     }
 );
 
+companyShema.pre('findOneAndDelete', async function () {
+    const company = this.getQuery() as TCompany;
+    await mongoose.model('User').updateMany({ company: company._id }, { $unset: { company: 1 } });
+});
+
 export const CompanyModel = mongoose.model<TCompanyDocument, TCompanyModel>('Company', companyShema);
