@@ -16,13 +16,10 @@ const projectImageSchema = new mongoose.Schema(
 const projectShema = new mongoose.Schema(
     {
         _id: { type: Schema.Types.ObjectId, auto: true },
-        name: { type: String },
         userId: { type: Schema.Types.ObjectId, ref: 'User', required: [true, 'User is required'] },
-        company: {
-            _id: { type: Schema.Types.ObjectId, ref: 'Company', required: [true, 'Company is required'] },
-            name: { type: String }
-        },
+        companyId: { type: Schema.Types.ObjectId, ref: 'Company', required: [true, 'Company is required'] },
 
+        name: { type: String },
         description: {
             short: { type: String },
             long: { type: String }

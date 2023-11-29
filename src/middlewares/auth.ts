@@ -63,7 +63,7 @@ export const restrictToProjectOwner = async (req: TAuthRequest, res: Response, n
 
     if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
 
-    const project = await projectService.getProjectById(req.params._id, ['userId']);
+    const project = await projectService.getProjectById(req.params._id, { select: 'userId' });
     if (!project) return next(new ApiError(httpStatus.NOT_FOUND, 'Project not found.'));
 
     const isOwner = project.userId === req.user._id;
