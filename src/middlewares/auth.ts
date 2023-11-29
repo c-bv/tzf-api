@@ -63,10 +63,10 @@ export const restrictToProjectOwner = async (req: TAuthRequest, res: Response, n
 
     if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
 
-    const project = await projectService.getProjectById(req.params._id, { select: 'userId' });
+    const project = await projectService.getProjectById(req.params._id, { select: '+userId' });
     if (!project) return next(new ApiError(httpStatus.NOT_FOUND, 'Project not found.'));
 
-    const isOwner = project.userId === req.user._id;
+    const isOwner = project.user === req.user._id;
     if (!isOwner) return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. This is not your resource.'));
 
     next();
@@ -77,10 +77,10 @@ export const restrictToCompanyMember = async (req: TAuthRequest, res: Response, 
 
     if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
 
-    const company = await companyService.getCompanyById(req.params._id, { select: 'members' });
+    const company = await companyService.getCompanyById(req.params._id, { select: '+users' });
     if (!company) return next(new ApiError(httpStatus.NOT_FOUND, 'Company not found.'));
 
-    const isMember = company?.members?.includes(req.user._id);
+    const isMember = company?.users?.includes(req.user._id);
     if (!isMember) return next(new ApiError(httpStatus.FORBIDDEN, 'Access denied. This is not your resource.'));
 
     next();

@@ -46,7 +46,7 @@ const userShema = new mongoose.Schema(
                 message: '{VALUE} is not supported'
             }
         },
-        companyId: { type: Schema.Types.ObjectId, ref: 'Company' },
+        company: { type: Schema.Types.ObjectId, ref: 'Company' },
         isVerified: { type: Boolean, default: false },
         isActive: { type: Boolean, default: false }
     },

@@ -15,13 +15,13 @@ const companyShema = new mongoose.Schema(
         website: { type: String },
         phone: { type: String },
         location: locationSchema,
-        members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 
         siret: { type: String },
         vatRate: { type: Number },
 
-        invoiceTemplateId: { type: Schema.Types.ObjectId, ref: 'InvoiceTemplate' },
-        certificateTemplateId: { type: Schema.Types.ObjectId, ref: 'CertificateTemplate' },
+        invoiceTemplate: { type: Schema.Types.ObjectId, ref: 'InvoiceTemplate' },
+        certificateTemplate: { type: Schema.Types.ObjectId, ref: 'CertificateTemplate' },
 
         paymentCards: [paymentCardSchema],
 
@@ -35,7 +35,7 @@ const companyShema = new mongoose.Schema(
             stripeId: { type: String }
         },
 
-        whiteLabelId: { type: Schema.Types.ObjectId, ref: 'WhiteLabel' },
+        whiteLabel: { type: Schema.Types.ObjectId, ref: 'WhiteLabel' },
 
         assets: {
             images: [fileSchema],

@@ -44,12 +44,12 @@ export const toggleWhiteLabel = async (req: TAuthRequest, res: Response) => {
     const company = await companyService.getCompanyById(req.params.id);
     if (!company) throw new ApiError(httpStatus.NOT_FOUND, 'Company not found');
 
-    if (!company.whiteLabelId) {
+    if (!company.whiteLabel) {
         // TODO - add white label id to company
     }
 
     await companyService.updateCompany(req.params.id, {
-        whiteLabelId: company.whiteLabelId,
+        whiteLabel: company.whiteLabel,
         canUseWhiteLabel: !company.canUseWhiteLabel
     });
 
@@ -69,12 +69,12 @@ export const createCompany = async (req: TAuthRequest, res: Response) => {
     const user = await userService.getUserById(req.user._id.toString());
     if (!user) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
 
-    if (user.companyId) throw new ApiError(httpStatus.BAD_REQUEST, 'User already has a company');
+    if (user.company) throw new ApiError(httpStatus.BAD_REQUEST, 'User already has a company');
 
     const company = await companyService.createCompany({ ...req.body, members: [req.user._id] });
     if (!company) throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Company not created');
 
-    await userService.updateUser(req.user._id.toString(), { companyId: company._id });
+    await userService.updateUser(req.user._id.toString(), { company: company._id });
 
     res.status(httpStatus.CREATED).send(company);
 };
