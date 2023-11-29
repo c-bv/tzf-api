@@ -79,7 +79,6 @@ export const projectShema = new mongoose.Schema(
         invoicePrefix: { type: String },
         minimumAmountToBuy: { type: Number, default: 0 },
 
-        canTakeTransactions: { type: Boolean, default: false },
         isPublished: { type: Boolean, default: false },
         isActive: { type: Boolean, default: false },
         isDeleted: { type: Boolean, default: false },

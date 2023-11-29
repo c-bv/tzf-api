@@ -63,7 +63,7 @@ export const restrictToProjectOwner = async (req: TAuthRequest, res: Response, n
 
     if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
 
-    const project = await projectService.getProjectById(req.params._id, { select: '+company' });
+    const project = await projectService.getProjectById(req.params._id, { select: 'company' });
     if (!project) return next(new ApiError(httpStatus.NOT_FOUND, 'Project not found.'));
 
     const company = await companyService.getCompanyByUserId(req.user._id.toString());
@@ -80,7 +80,7 @@ export const restrictToCompanyMember = async (req: TAuthRequest, res: Response, 
 
     if (ROLES_GROUPS.admin.includes(req.user.role as any)) return next();
 
-    const company = await companyService.getCompanyById(req.params._id, { select: '+users' });
+    const company = await companyService.getCompanyById(req.params._id, { select: 'users' });
     if (!company) return next(new ApiError(httpStatus.NOT_FOUND, 'Company not found.'));
 
     const isMember = company?.users?.includes(req.user._id);
