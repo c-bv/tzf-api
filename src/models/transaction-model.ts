@@ -4,9 +4,9 @@ import mongoose, { Document, InferSchemaType, Model, Schema } from 'mongoose';
 export type TTransaction = InferSchemaType<typeof transactionShema>;
 export type TTransactionDocument = TTransaction & Document;
 export type TTransactionModel = Model<TTransactionDocument>;
-export type TProjectTransaction = InferSchemaType<typeof projectTransactionSchema> & TProject;
+export type TProjectInTransaction = InferSchemaType<typeof projectInTransactionSchema> & TProject;
 
-const projectTransactionSchema = new mongoose.Schema(
+const projectInTransactionSchema = new mongoose.Schema(
     {
         ...projectShema.obj,
         quantity: { type: Number },
@@ -21,21 +21,19 @@ const transactionShema = new mongoose.Schema(
         _id: { type: Schema.Types.ObjectId, auto: true },
         user: { type: Schema.Types.ObjectId, ref: 'User' },
 
-        projects: [projectTransactionSchema],
+        projects: [projectInTransactionSchema],
 
         status: {
             type: String,
-            enum: ['IN PROGRESS', 'SUCCEEDED', 'FAILED', 'CANCELED']
+            enum: ['IN PROGRESS', 'SUCCEEDED', 'FAILED', 'CANCELED'],
+            default: 'IN PROGRESS'
         },
         origin: {
-            type: {
+            source: {
                 type: String,
                 enum: ['website', 'storefront', 'apiKey']
             },
-            id: { type: String },
-            toolName: { type: String },
-            companyId: { type: String },
-            companyName: { type: String }
+            id: { type: String }
         },
 
         amount: { type: Number },
@@ -47,8 +45,8 @@ const transactionShema = new mongoose.Schema(
         },
 
         stripe: {
-            paymentId: { type: String },
-            trasnferGroup: { type: String }
+            clientSecret: { type: String },
+            transferGroup: { type: String }
         },
 
         keyTransactions: { type: [String] },

@@ -1,7 +1,7 @@
 export { CompanyModel, TCompany, TCompanyDocument, TCompanyModel } from './company-model';
 export { ProjectModel, TProject, TProjectDocument, TProjectModel, projectShema } from './project-model';
 export {
-    TProjectTransaction,
+    TProjectInTransaction,
     TTransaction,
     TTransactionDocument,
     TTransactionModel,
