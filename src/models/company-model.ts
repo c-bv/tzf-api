@@ -20,6 +20,7 @@ const companyShema = new mongoose.Schema(
         siret: { type: String },
         vatRate: { type: Number },
 
+        invoiceInfos: { type: String },
         invoiceTemplate: { type: Schema.Types.ObjectId, ref: 'InvoiceTemplate' },
         certificateTemplate: { type: Schema.Types.ObjectId, ref: 'CertificateTemplate' },
 

@@ -23,26 +23,17 @@ export const projectShema = new mongoose.Schema(
             short: { type: String },
             long: { type: String }
         },
-        story: { type: String },
-        solution: { type: String },
-        impact: { type: String },
 
         type: { type: String },
-        url: { type: String },
+        website: { type: String },
         images: [projectImageSchema],
         sdgs: { type: [Number] },
         label: {
-            _id: false,
-            name: { type: String }
+            name: { type: String },
+            file: { type: String }
         },
         certifLabel: { type: String },
-        audits: [
-            {
-                _id: false,
-                name: { type: String }
-            }
-        ],
-
+        audits: [fileSchema],
         commissionRate: { type: Number },
         carbon: {
             volume: { type: Number },
@@ -59,14 +50,14 @@ export const projectShema = new mongoose.Schema(
                     firstName: { type: String },
                     lastName: { type: String }
                 },
-                url: { type: String }, // Will be deleted in the future
+                website: { type: String },
                 location: locationSchema,
-                urls: { type: [String] },
                 description: { type: String },
                 images: [projectImageSchema]
             }
         ],
         dates: {
+            // TODO: add date pub
             started: { type: Date },
             ended: { type: Date },
             acceptation: { type: Date },
@@ -74,9 +65,11 @@ export const projectShema = new mongoose.Schema(
         },
 
         nextBillNumber: { type: Number },
-        certificateNumber: { type: String },
         nextCertificateSerial: { type: Number },
+
+        certificateNumber: { type: String },
         invoicePrefix: { type: String },
+
         minimumAmountToBuy: { type: Number, default: 0 },
 
         isPublished: { type: Boolean, default: false },
