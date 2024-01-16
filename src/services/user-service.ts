@@ -2,7 +2,7 @@ import { TUser, TUserDocument, UserModel } from '@models';
 import { ApiError } from '@utils/ApiError';
 import httpStatus from 'http-status';
 
-type RegisterUserData = {
+type TRegisterUserData = {
     email: TUser['email'];
     firstName: TUser['firstName'];
     lastName: TUser['lastName'];
@@ -16,7 +16,7 @@ type RegisterUserData = {
  * @returns A promise that resolves with the created user document.
  * @throws ApiError with status 400 if the email is already taken.
  */
-export const createUser = async (userData: RegisterUserData): Promise<Partial<TUserDocument>> => {
+export const createUser = async (userData: TRegisterUserData): Promise<Partial<TUserDocument>> => {
     if (await UserModel.isEmailTaken(userData.email)) throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
     return await UserModel.create(userData);
 };

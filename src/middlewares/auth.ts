@@ -5,7 +5,7 @@ import { ApiError } from '@utils/ApiError';
 import { NextFunction, Response } from 'express';
 import httpStatus from 'http-status';
 
-type RoleGroups = {
+type TRoleGroups = {
     admin: ['admin'];
     buyer: ['buyer', 'consultingBuyer'];
     seller: ['seller', 'consultingSeller'];
@@ -13,10 +13,10 @@ type RoleGroups = {
 };
 
 export const ROLES_GROUPS = {
-    admin: ['admin'] as RoleGroups['admin'],
-    buyer: ['buyer', 'consultingBuyer'] as RoleGroups['buyer'],
-    seller: ['seller', 'consultingSeller'] as RoleGroups['seller'],
-    all: ['admin', 'buyer', 'seller', 'consultingBuyer', 'consultingSeller'] as RoleGroups['all']
+    admin: ['admin'] as TRoleGroups['admin'],
+    buyer: ['buyer', 'consultingBuyer'] as TRoleGroups['buyer'],
+    seller: ['seller', 'consultingSeller'] as TRoleGroups['seller'],
+    all: ['admin', 'buyer', 'seller', 'consultingBuyer', 'consultingSeller'] as TRoleGroups['all']
 };
 
 export const loadUser = async (req: TAuthRequest, res: Response, next: NextFunction) => {

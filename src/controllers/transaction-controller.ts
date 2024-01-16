@@ -33,12 +33,12 @@ const checkProject = async (project: TProjectInTransaction) => {
         throw new ApiError(httpStatus.BAD_REQUEST, `Project ${project._id} is not published`);
 
     if (
-        !projectWithQuantity?.carbon?.forSaleVolume ||
-        projectWithQuantity?.carbon?.forSaleVolume <= projectWithQuantity?.quantity
+        !projectWithQuantity.carbon.forSaleVolume ||
+        projectWithQuantity.carbon.forSaleVolume <= projectWithQuantity.quantity
     )
         throw new ApiError(httpStatus.BAD_REQUEST, `Project ${project._id} has not enough carbon to sell`);
 
-    if (projectWithQuantity?.minimumAmountToBuy > projectWithQuantity?.quantity)
+    if (projectWithQuantity.minimumAmountToBuy > projectWithQuantity.quantity)
         throw new ApiError(
             httpStatus.BAD_REQUEST,
             `The minimum amount to buy for project ${project._id} is ${projectWithQuantity?.minimumAmountToBuy}`
@@ -56,7 +56,19 @@ export const createTransaction = async (req: TAuthRequest, res: Response) => {
 
     await Promise.all(
         transactionData.projects.map(async (project: TProjectInTransaction) => {
-            await checkProject(project);
+            if (!project._id) throw new ApiError(httpStatus.BAD_REQUEST, 'Project id is required');
+
+            const projectInDb = await projectService.getProjectById(project._id.toString(), {
+                select: 'isDeleted isActive isPublished carbon dates minimumAmountToBuy'
+            });
+            if (!projectInDb) throw new ApiError(httpStatus.NOT_FOUND, `Project ${project._id} not found`);
+
+            const projectWithQuantity: TProjectInTransaction = {
+                ...projectInDb.toObject(),
+                quantity: project.quantity
+            };
+
+            await checkProject(projectWithQuantity);
 
             const company = await companyService.getCompanyById(project.company.toString(), {
                 select: 'canTakeTransfers'

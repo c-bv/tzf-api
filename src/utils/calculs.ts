@@ -3,11 +3,11 @@ import { TProjectInTransaction } from '@models';
 export const calculAmount = (projects: TProjectInTransaction[]): number => {
     let amount = 0;
     if (!projects) return amount;
-
+    console.log('🚩', projects);
     projects.forEach((project: TProjectInTransaction) => {
         if (!project.carbon) return;
-        if (!project.isWithoutCarbonCredit && project.carbon.volume && project.carbon.unitPrice) {
-            amount += project.carbon.volume * project.carbon.unitPrice;
+        if (!project.isWithoutCarbonCredit && project.quantity && project.carbon.unitPrice) {
+            amount += project.quantity * project.carbon.unitPrice;
         }
     });
 
