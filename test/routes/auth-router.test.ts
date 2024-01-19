@@ -1,14 +1,16 @@
 import { app } from '@/app';
+import { faker } from '@faker-js/faker';
+import { users } from '@test/jest-setup';
 import request from 'supertest';
 
 describe('Auth Router', () => {
     describe('POST /register', () => {
         it('should register a new user successfully', async () => {
             const userData = {
-                firstName: 'John',
-                lastName: 'Doe',
-                email: 'john@doe.com',
-                password: '123456',
+                firstName: faker.person.firstName(),
+                lastName: faker.person.lastName(),
+                email: faker.internet.email(),
+                password: faker.internet.password(),
                 role: 'seller'
             };
 
@@ -23,8 +25,8 @@ describe('Auth Router', () => {
     describe('POST /login', () => {
         it('should login a user successfully', async () => {
             const userData = {
-                email: 'john@doe.com',
-                password: '123456'
+                email: users.seller.user.email,
+                password: users.seller.user.password
             };
 
             const response = await request(app).post('/v1/auth/login').send(userData);
