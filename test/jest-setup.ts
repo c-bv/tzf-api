@@ -1,16 +1,17 @@
 import { faker } from '@faker-js/faker';
 import { TUser } from '@models';
-import { tokenService, userService } from '@services';
+import { companyService, tokenService, userService } from '@services';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
 let mongoServer: MongoMemoryServer;
 
-const ROLES = ['admin', 'seller', 'buyer'];
+const USERS = ['admin', 'seller', 'sellerWithoutCompany', 'buyer'];
 
 export const users: Record<string, any> = {
     admin: null,
     seller: null,
+    sellerWithoutCompany: null,
     buyer: null
 };
 
@@ -20,18 +21,24 @@ beforeAll(async () => {
     await mongoose.connect(mongoUri);
 
     await Promise.all(
-        ROLES.map(async role => {
-            const user = await userService.createUser({
+        USERS.map(async user => {
+            const newUser = await userService.createUser({
                 firstName: faker.person.firstName(),
                 lastName: faker.person.lastName(),
                 email: faker.internet.email(),
                 password: faker.internet.password(),
-                role: role as TUser['role']
+                role: user === 'sellerWithoutCompany' ? ('seller' as TUser['role']) : (user as TUser['role'])
             });
-            const token = tokenService.generateAuthToken(user);
+            if (user === 'seller' || user === 'buyer') {
+                await companyService.createCompany({
+                    name: faker.company.name(),
+                    users: [newUser._id]
+                });
+            }
+            const token = tokenService.generateAuthToken(newUser);
             // @ts-expect-error - toObject() is not defined on UserDocument
-            const userobj = user.toObject();
-            users[role] = { ...userobj, token };
+            const userobj = newUser.toObject();
+            users[user] = { ...userobj, token };
         })
     );
 });
