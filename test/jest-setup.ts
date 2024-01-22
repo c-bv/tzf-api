@@ -29,7 +29,9 @@ beforeAll(async () => {
                 role: role as TUser['role']
             });
             const token = tokenService.generateAuthToken(user);
-            users[role] = { user, token };
+            // @ts-expect-error - toObject() is not defined on UserDocument
+            const userobj = user.toObject();
+            users[role] = { ...userobj, token };
         })
     );
 });

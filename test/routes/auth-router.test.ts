@@ -25,8 +25,8 @@ describe('Auth Router', () => {
     describe('POST /login', () => {
         it('should login a user successfully', async () => {
             const userData = {
-                email: users.seller.user.email,
-                password: users.seller.user.password
+                email: users.seller.email,
+                password: users.seller.password
             };
 
             const response = await request(app).post('/v1/auth/login').send(userData);
