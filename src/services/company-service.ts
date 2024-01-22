@@ -56,7 +56,7 @@ export const updateCompany = async (id: string, update: Partial<TCompany>): Prom
  * @param company The company object to create.
  * @returns A promise that resolves to the created company document.
  */
-export const createCompany = async (company: TCompany): Promise<TCompanyDocument> => {
+export const createCompany = async (company: Partial<TCompany>): Promise<TCompanyDocument> => {
     return await CompanyModel.create(company);
 };
 

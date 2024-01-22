@@ -4,7 +4,7 @@ import { users } from '@test/jest-setup';
 import request from 'supertest';
 
 describe('Auth Router', () => {
-    describe('POST /register', () => {
+    describe('POST /v1/register', () => {
         it('should register a new user successfully', async () => {
             const userData = {
                 firstName: faker.person.firstName(),
@@ -16,13 +16,13 @@ describe('Auth Router', () => {
 
             const response = await request(app).post('/v1/auth/register').send(userData);
 
+            expect(response.statusCode).toBe(201);
             expect(response.body).toHaveProperty('token');
             expect(response.body).toHaveProperty('user');
-            expect(response.statusCode).toBe(201);
         });
     });
 
-    describe('POST /login', () => {
+    describe('POST /v1/login', () => {
         it('should login a user successfully', async () => {
             const userData = {
                 email: users.seller.email,
@@ -31,9 +31,9 @@ describe('Auth Router', () => {
 
             const response = await request(app).post('/v1/auth/login').send(userData);
 
+            expect(response.statusCode).toBe(200);
             expect(response.body).toHaveProperty('token');
             expect(response.body).toHaveProperty('user');
-            expect(response.statusCode).toBe(200);
         });
     });
 });
