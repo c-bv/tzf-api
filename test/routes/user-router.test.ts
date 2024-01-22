@@ -17,6 +17,7 @@ describe('User Router', () => {
         it('should get all users successfully', async () => {
             const response = await request(app).get('/v1/users').set('Authorization', `Bearer ${users.admin.token}`);
             expect(response.statusCode).toBe(200);
+            expect(response.body).toBeInstanceOf(Array);
         });
     });
 
@@ -30,7 +31,9 @@ describe('User Router', () => {
             const response = await request(app)
                 .get('/v1/users/me')
                 .set('Authorization', `Bearer ${users.seller.token}`);
+
             expect(response.statusCode).toBe(200);
+            expect(response.body).toBeInstanceOf(Object);
         });
     });
 
@@ -52,6 +55,7 @@ describe('User Router', () => {
                 .get(`/v1/users/${users.seller._id}`)
                 .set('Authorization', `Bearer ${users.seller.token}`);
             expect(response.statusCode).toBe(200);
+            expect(response.body).toBeInstanceOf(Object);
         });
     });
 
@@ -73,6 +77,7 @@ describe('User Router', () => {
                 .delete(`/v1/users/${users.buyer._id}`)
                 .set('Authorization', `Bearer ${users.admin.token}`);
             expect(response.statusCode).toBe(200);
+            expect(response.body).toBeInstanceOf(Object);
         });
     });
 
@@ -94,6 +99,7 @@ describe('User Router', () => {
                 .patch(`/v1/users/${users.seller._id}/verify`)
                 .set('Authorization', `Bearer ${users.admin.token}`);
             expect(response.statusCode).toBe(200);
+            expect(response.body).toBeInstanceOf(Object);
         });
     });
 
@@ -115,6 +121,7 @@ describe('User Router', () => {
                 .patch(`/v1/users/${users.seller._id}/activate`)
                 .set('Authorization', `Bearer ${users.admin.token}`);
             expect(response.statusCode).toBe(200);
+            expect(response.body).toBeInstanceOf(Object);
         });
     });
 });
