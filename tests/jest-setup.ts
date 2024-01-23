@@ -1,3 +1,4 @@
+import { logger } from '@/config/logger';
 import { faker } from '@faker-js/faker';
 import { TUser } from '@models';
 import { companyService, projectService, tokenService, userService } from '@services';
@@ -15,11 +16,12 @@ export const users: Record<string, any> = {
     buyer: null
 };
 
-export const projets: Record<string, any> = {
+export const projects: Record<string, any> = {
     project: null
 };
 
 beforeAll(async () => {
+    logger.transports.forEach(t => (t.silent = true));
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
     await mongoose.connect(mongoUri);
@@ -50,10 +52,11 @@ beforeAll(async () => {
         name: faker.commerce.productName(),
         company: new mongoose.Types.ObjectId(users.seller.company)
     });
-    projets.project = newProject.toObject();
+    projects.project = newProject.toObject();
 });
 
 afterAll(async () => {
+    logger.transports.forEach(t => (t.silent = false));
     try {
         if (mongoose.connection.readyState !== 0) {
             const { collections } = mongoose.connection;
