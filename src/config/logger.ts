@@ -3,7 +3,7 @@ import winston from 'winston';
 
 const enumerateErrorFormat = winston.format((info: any) => {
     if (info instanceof Error) {
-        Object.assign(info, { message: info.stack });
+        Object.assign(info, { message: info.message, stack: info.stack });
     }
     return info;
 });
@@ -12,11 +12,11 @@ export const logger = winston.createLogger({
     level: config.env === 'development' ? 'debug' : 'info',
     format: winston.format.combine(
         enumerateErrorFormat(),
-        config.env === 'development' ? winston.format.colorize() : winston.format.uncolorize(),
         winston.format.timestamp({
             format: 'YYYY-MM-DD HH:mm:ss'
         }),
-        winston.format.printf((info: any) => `${info.timestamp} ${info.level}: ${info.message}`)
+        winston.format.errors({ stack: true }),
+        winston.format.printf((info: any) => `${info.timestamp} ${info.level}: ${info.stack || info.message}`)
     ),
     transports: [
         new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
@@ -24,4 +24,13 @@ export const logger = winston.createLogger({
     ]
 });
 
-config.env !== 'production' && logger.add(new winston.transports.Console());
+if (config.env !== 'production') {
+    logger.add(
+        new winston.transports.Console({
+            format: winston.format.combine(
+                winston.format.colorize(),
+                winston.format.printf((info: any) => `${info.timestamp} ${info.level}: ${info.message}`)
+            )
+        })
+    );
+}
