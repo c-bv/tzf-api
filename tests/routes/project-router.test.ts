@@ -47,4 +47,34 @@ describe('Project Router', () => {
             expect(response.body).toBeInstanceOf(Object);
         });
     });
+
+    // describe('GET /v1/projects/:_id', () => {
+    //     const projectId = '5f9d88d3f4d1a9a6d1a9a6d1';
+    //     it('should return 401 if authorization header is missing', async () => {
+    //         const response = await request(app).get(`/v1/projects/${projectId}`);
+    //         expect(response.statusCode).toBe(401);
+    //     });
+
+    //     it('should return 400 if project id is missing', async () => {
+    //         const response = await request(app)
+    //             .get('/v1/projects/')
+    //             .set('Authorization', `Bearer ${users.seller.token}`);
+    //         expect(response.statusCode).toBe(400);
+    //     });
+
+    //     it('should return 404 if project does not exist', async () => {
+    //         const response = await request(app)
+    //             .get('/v1/projects/5f9d88d3f4d1a9a6d1a9a6d1')
+    //             .set('Authorization', `Bearer ${users.seller.token}`);
+    //         expect(response.statusCode).toBe(404);
+    //     });
+
+    //     // it('should get project successfully', async () => {
+    //     //     const response = await request(app)
+    //     //         .get('/v1/projects/1')
+    //     //         .set('Authorization', `Bearer ${users.seller.token}`);
+    //     //     expect(response.statusCode).toBe(200);
+    //     //     expect(response.body).toBeInstanceOf(Object);
+    //     // });
+    // });
 });

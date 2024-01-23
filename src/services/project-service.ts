@@ -31,7 +31,7 @@ export const getProjects = async (options?: { select?: string; populate?: string
  * @param project - The project object.
  * @returns A promise that resolves to the created project document.
  */
-export const createProject = async (project: TProject): Promise<TProjectDocument> => {
+export const createProject = async (project: Partial<TProject>): Promise<TProjectDocument> => {
     return await ProjectModel.create(project);
 };
 

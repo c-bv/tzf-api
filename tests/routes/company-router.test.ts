@@ -34,7 +34,7 @@ describe('Company Router', () => {
         it('should create a new company successfully', async () => {
             const response = await request(app)
                 .post('/v1/companies')
-                .set('Authorization', `Bearer ${users.seller.token}`)
+                .set('Authorization', `Bearer ${users.sellerWithoutCompany.token}`)
                 .send({ name: 'Test Company' });
             expect(response.statusCode).toBe(201);
             expect(response.body).toHaveProperty('_id');

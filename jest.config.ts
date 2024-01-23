@@ -6,7 +6,7 @@ const jestConfig: JestConfigWithTsJest = {
     verbose: true,
     preset: 'ts-jest/presets/js-with-ts-esm',
     testEnvironment: 'node',
-    setupFilesAfterEnv: ['dotenv/config', '<rootDir>/test/jest-setup.ts'],
+    setupFilesAfterEnv: ['dotenv/config', '<rootDir>/tests/jest-setup.ts'],
     roots: ['<rootDir>'],
     modulePaths: [compilerOptions.baseUrl],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' })

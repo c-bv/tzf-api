@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { TUser } from '@models';
-import { companyService, tokenService, userService } from '@services';
+import { companyService, projectService, tokenService, userService } from '@services';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 
@@ -13,6 +13,10 @@ export const users: Record<string, any> = {
     seller: null,
     sellerWithoutCompany: null,
     buyer: null
+};
+
+export const projets: Record<string, any> = {
+    project: null
 };
 
 beforeAll(async () => {
@@ -30,10 +34,11 @@ beforeAll(async () => {
                 role: user === 'sellerWithoutCompany' ? ('seller' as TUser['role']) : (user as TUser['role'])
             });
             if (user === 'seller' || user === 'buyer') {
-                await companyService.createCompany({
+                const newCompany = await companyService.createCompany({
                     name: faker.company.name(),
                     users: [newUser._id]
                 });
+                await userService.updateUser(newUser._id, { company: newCompany._id });
             }
             const token = tokenService.generateAuthToken(newUser);
             // @ts-expect-error - toObject() is not defined on UserDocument
@@ -41,6 +46,11 @@ beforeAll(async () => {
             users[user] = { ...userobj, token };
         })
     );
+    const newProject = await projectService.createProject({
+        name: faker.commerce.productName(),
+        company: new mongoose.Types.ObjectId(users.seller.company)
+    });
+    projets.project = newProject.toObject();
 });
 
 afterAll(async () => {
