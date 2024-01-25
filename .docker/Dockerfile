@@ -22,8 +22,8 @@ RUN npm run build
 # Production image, copy built JavaScript files and run Express
 FROM base AS runner
 WORKDIR /app
-
-RUN console.log(process.env.NODE_ENV)
+# echo node env
+RUN echo $NODE_ENV
 
 # Create a non-root user for running the application
 RUN addgroup --system --gid 1001 nodejs
