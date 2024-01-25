@@ -33,5 +33,6 @@ COPY --from=builder /app/dist ./dist
 # Run as non-root by default
 USER express-api-user
 
+ENV NODE_ENV=production
 # Run the web service on container startup
 CMD ["node", "dist/src/index.js"]
