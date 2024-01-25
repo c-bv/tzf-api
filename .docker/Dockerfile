@@ -1,4 +1,5 @@
 FROM node:20-alpine AS base
+WORKDIR /app
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -10,41 +11,24 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --loglevel verbose
 
-# Rebuild the source code only when needed
+# Build the TypeScript source code
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV NEXT_TELEMETRY_DISABLED 1
+RUN npm run build  
 
-RUN npm run build
-
-# Production image, copy all the files and run next
+# Production image, copy built JavaScript files and run Express
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
+RUN console.log(process.env.NODE_ENV)
 
+# Create a non-root user for running the application
 RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN adduser --system --uid 1001 express-api-user
 
-COPY --from=builder /app/public ./public
+# Copy built files from builder stage
+COPY --from=builder /app/dist ./dist
 
-# Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
-EXPOSE 3000
-
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
-
-CMD ["node", "server.js"]
