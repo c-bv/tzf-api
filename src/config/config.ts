@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 
 export type TConfig = typeof config;
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+dotenv.config({ path: '.env' });
 
 export const config = {
     env: process.env.NODE_ENV!,
