@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Install dependencies based
 COPY package*.json ./
-RUN npm ci --loglevel verbose
+RUN npm ci
 
 # Build the TypeScript source code
 FROM base AS builder
@@ -22,8 +22,6 @@ RUN npm run build
 # Production image, copy built JavaScript files and run Express
 FROM base AS runner
 WORKDIR /app
-# echo node env
-RUN echo $NODE_ENV
 
 # Create a non-root user for running the application
 RUN addgroup --system --gid 1001 nodejs
@@ -32,3 +30,8 @@ RUN adduser --system --uid 1001 express-api-user
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
 
+# Run as non-root by default
+USER express-api-user
+
+# Run the web service on container startup
+CMD ["node", "dist/src/index.js"]
