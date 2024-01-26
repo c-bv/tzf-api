@@ -32,6 +32,8 @@ RUN adduser --system --uid 1001 express-api-user
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 
+RUN chown -R 1001:1001 /app
+
 # Run as non-root by default
 USER express-api-user
 
