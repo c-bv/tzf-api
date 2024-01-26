@@ -23,16 +23,17 @@ RUN npm run build
 FROM base AS runner
 WORKDIR /app
 
-# Create a non-root user for running the application
+ENV NODE_ENV=production
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 express-api-user
 
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
 
 # Run as non-root by default
 USER express-api-user
 
-ENV NODE_ENV=production
 # Run the web service on container startup
 CMD ["node", "dist/src/index.js"]
