@@ -67,9 +67,6 @@ jobs:
         environment: Production
 
         steps:
-            - name: Debug secret length
-              run: |
-                  echo "Secret length: ${#DOTENV}"
             - name: Deploy to VPS
               uses: appleboy/ssh-action@v1.0.3
               with:
@@ -79,9 +76,7 @@ jobs:
                   port: ${{ secrets.SSH_PORT }}
                   script: |
                       cd ~/${{ env.REPO_NAME }}
-                      echo $DOTENV
-                      echo "${{ secrets.DOT_ENV }}" > .env
-                      echo .env
+                      echo "${{ secrets.DOTENV }}" > .env
                       docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
                       docker-compose down --rmi all
                       docker-compose up -d
