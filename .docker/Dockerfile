@@ -8,15 +8,14 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based
-COPY package*.json ./
+COPY ../package*.json ./
 RUN npm ci
 
 # Build the TypeScript source code
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-COPY .env ./
+COPY ../ ./
 
 RUN npm run build  
 
