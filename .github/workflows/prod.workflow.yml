@@ -66,6 +66,9 @@ jobs:
         needs: build-and-push-image
 
         steps:
+            - name: Debug secret length
+              run: |
+                  echo "Secret length: ${#DOTENV}"
             - name: Deploy to VPS
               uses: appleboy/ssh-action@v1.0.3
               with:
@@ -75,8 +78,8 @@ jobs:
                   port: ${{ secrets.SSH_PORT }}
                   script: |
                       cd ~/${{ env.REPO_NAME }}
-                      echo "${{ secrets.DOTENV }}"
-                      echo "${{ secrets.DOTENV }}" > .env
+                      echo $DOTENV
+                      echo "${{ secrets.DOT_ENV }}" > .env
                       echo .env
                       docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
                       docker-compose down --rmi all
