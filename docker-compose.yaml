@@ -7,9 +7,9 @@ services:
         restart: unless-stopped
         labels:
             - traefik.enable=true
-            - traefik.http.routers.portfolio-client.rule=Host(`dev-api.c-bv.dev`)
-            - traefik.http.routers.portfolio-client.entrypoints=websecure
-            - traefik.http.services.portfolio-client.loadbalancer.server.port=5000
+            - traefik.http.routers.tzf-api.rule=Host(`dev-api.c-bv.dev`)
+            - traefik.http.routers.tzf-api.entrypoints=websecure
+            - traefik.http.services.tzf-api.loadbalancer.server.port=5000
         expose:
             - 5000
 
