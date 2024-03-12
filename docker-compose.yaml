@@ -5,10 +5,15 @@ services:
         env_file:
             - .env
         restart: unless-stopped
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.portfolio-client.rule=Host(`dev-api.c-bv.dev`)
+            - traefik.http.routers.portfolio-client.entrypoints=websecure
+            - traefik.http.services.portfolio-client.loadbalancer.server.port=5000
         expose:
             - 5000
-        networks:
-            - nginx-proxy
+
 networks:
-    nginx-proxy:
+    default:
+        name: traefik
         external: true

@@ -75,8 +75,9 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   script: |
-                      cd ~/${{ env.REPO_NAME }}
-                      echo "${{ secrets.DOTENV }}" > .env
+                      cd /opt/stacks/${{ env.REPO_NAME }}
+                      git fetch --all
+                      git checkout origin/main -- docker-compose.yaml
                       docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-                      docker-compose down --rmi all
-                      docker-compose up -d
+                      docker rmi -f ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+                      docker compose up -d --force-recreate
